@@ -1,0 +1,216 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* Vertdure Color Palette */
+  --background: #F7F5EE;
+  --foreground: #1D1D1B;
+  --card: #FFFFFF;
+  --card-foreground: #1D1D1B;
+  --popover: #FFFFFF;
+  --popover-foreground: #1D1D1B;
+
+  /* Primary: Vertdure Green */
+  --primary: #56AF31;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary: Cream/Off-white */
+  --secondary: #F7F5EE;
+  --secondary-foreground: #1D1D1B;
+
+  /* Muted: Light cream */
+  --muted: #F7F5EE;
+  --muted-foreground: #847867;
+
+  /* Accent: Yellow */
+  --accent: #FFE900;
+  --accent-foreground: #1D1D1B;
+
+  --destructive: #E53E3E;
+  --border: #D6D2CC;
+  --input: #D6D2CC;
+  --ring: #56AF31;
+
+  /* Chart colors */
+  --chart-1: #56AF31;
+  --chart-2: #2D5335;
+  --chart-3: #92D5F2;
+  --chart-4: #FFE900;
+  --chart-5: #847867;
+
+  /* Sidebar */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1D1D1B;
+  --sidebar-primary: #56AF31;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F7F5EE;
+  --sidebar-accent-foreground: #1D1D1B;
+  --sidebar-border: #D6D2CC;
+  --sidebar-ring: #56AF31;
+
+  /* Custom Vertdure colors */
+  --vertdure-green: #56AF31;
+  --vertdure-dark-green: #2D5335;
+  --vertdure-yellow: #FFE900;
+  --vertdure-cream: #F7F5EE;
+  --vertdure-blue: #92D5F2;
+  --vertdure-taupe: #847867;
+}
+
+.dark {
+  /* Dark mode using Vertdure dark green */
+  --background: #1D1D1B;
+  --foreground: #F7F5EE;
+  --card: #2D5335;
+  --card-foreground: #F7F5EE;
+  --popover: #2D5335;
+  --popover-foreground: #F7F5EE;
+
+  --primary: #56AF31;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #2D5335;
+  --secondary-foreground: #F7F5EE;
+
+  --muted: #2D5335;
+  --muted-foreground: #D6D2CC;
+
+  --accent: #FFE900;
+  --accent-foreground: #1D1D1B;
+
+  --destructive: #E53E3E;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #56AF31;
+
+  --chart-1: #56AF31;
+  --chart-2: #92D5F2;
+  --chart-3: #FFE900;
+  --chart-4: #847867;
+  --chart-5: #F7F5EE;
+
+  --sidebar: #1D1D1B;
+  --sidebar-foreground: #F7F5EE;
+  --sidebar-primary: #56AF31;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #2D5335;
+  --sidebar-accent-foreground: #F7F5EE;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #56AF31;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom selection color */
+::selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: inherit;
+}
+
+/* Smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Hide scrollbar for some elements while allowing scroll */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Improve image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Button transitions */
+button,
+a {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+}
