@@ -1,7 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { getCustomer } from '@/lib/customerAuth';
 import Cookies from 'js-cookie';
 
 interface Customer {
@@ -37,15 +36,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
                 if (token) {
                     setAccessToken(token);
-                    const customerData = await getCustomer(token);
 
-                    if (customerData) {
-                        setCustomer(customerData);
-                    } else {
-                        // Token is invalid, clear it
-                        Cookies.remove('customer_access_token');
-                        Cookies.remove('customer_refresh_token');
-                        setAccessToken(null);
+                    try {
+                        const response = await fetch('/api/auth/profile');
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.customer) {
+                                setCustomer(data.customer);
+                            }
+                        } else {
+                            // Token might be invalid or expired
+                            Cookies.remove('customer_access_token');
+                            Cookies.remove('customer_refresh_token');
+                            setAccessToken(null);
+                        }
+                    } catch (err) {
+                        console.error('Failed to fetch profile', err);
                     }
                 }
             } catch (error) {
