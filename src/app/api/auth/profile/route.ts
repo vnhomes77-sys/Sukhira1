@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getCustomer } from '@/lib/customerAuth';
+import { getCustomer } from '@/lib/customerAuth.server';
 
 export async function GET(request: NextRequest) {
     try {

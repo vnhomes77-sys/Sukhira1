@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { exchangeToken } from '@/lib/customerAuth';
+import { exchangeToken } from '@/lib/customerAuth.server';
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;

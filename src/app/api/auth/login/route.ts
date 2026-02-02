@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getAuthorizationUrl } from '@/lib/customerAuth';
+import { getAuthorizationUrl } from '@/lib/customerAuth.server';
 
 export async function GET() {
     try {
