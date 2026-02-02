@@ -79,7 +79,7 @@ export async function exchangeToken(
     expiresIn: number;
     idToken: string;
 }> {
-    const tokenEndpoint = `https://shopify.com/${shopDomain.replace('.myshopify.com', '')}/auth/oauth/token`;
+    const tokenEndpoint = `https://sukhira.myshopify.com`;
 
     const response = await fetch(tokenEndpoint, {
         method: 'POST',
