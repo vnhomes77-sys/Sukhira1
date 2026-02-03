@@ -16,15 +16,15 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: {
-    default: 'ShopStore - Premium Home & Kitchen Electronics',
-    template: '%s | ShopStore',
+    default: 'Sukhira - Premium Home & Kitchen Electronics',
+    template: '%s | Sukhira',
   },
   description:
     'Discover premium home and kitchen products, electronics, and more. Shop the latest collections with free shipping on orders over $50.',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'ShopStore',
+    siteName: 'Sukhira',
   },
   twitter: {
     card: 'summary_large_image',
