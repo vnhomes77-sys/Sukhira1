@@ -144,7 +144,10 @@ export async function refreshAccessToken(refreshToken: string): Promise<{
 }
 
 // Customer Account API endpoint
-const customerApiEndpoint = `https://shopify.com/${shopDomain.replace('.myshopify.com', '')}/account/customer/api/2024-01/graphql`;
+const getCustomerApiEndpoint = () => {
+  const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
+  return `https://shopify.com/${domain.replace('.myshopify.com', '')}/account/customer/api/2024-01/graphql`;
+};
 
 // Fetch customer data using Customer Account API
 export async function getCustomer(accessToken: string): Promise<{
@@ -170,7 +173,7 @@ export async function getCustomer(accessToken: string): Promise<{
     }
   `;
 
-  const response = await fetch(customerApiEndpoint, {
+  const response = await fetch(getCustomerApiEndpoint(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -244,7 +247,7 @@ export async function getCustomerOrders(accessToken: string) {
     }
   `;
 
-  const response = await fetch(customerApiEndpoint, {
+  const response = await fetch(getCustomerApiEndpoint(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

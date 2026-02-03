@@ -1,7 +1,10 @@
 // Customer Metafield operations for wishlist sync
 
-const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
-const customerApiEndpoint = `https://shopify.com/${shopDomain.replace('.myshopify.com', '')}/account/customer/api/2024-01/graphql`;
+const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
+const getCustomerApiEndpoint = () => {
+    const domain = shopDomain.replace('.myshopify.com', '');
+    return `https://shopify.com/${domain}/account/customer/api/2024-01/graphql`;
+};
 
 export interface WishlistItem {
     productId: string;
@@ -27,7 +30,7 @@ export async function getWishlistFromMetafield(
   `;
 
     try {
-        const response = await fetch(customerApiEndpoint, {
+        const response = await fetch(getCustomerApiEndpoint(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +78,7 @@ export async function saveWishlistToMetafield(
   `;
 
     try {
-        const response = await fetch(customerApiEndpoint, {
+        const response = await fetch(getCustomerApiEndpoint(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
