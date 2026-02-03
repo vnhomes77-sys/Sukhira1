@@ -146,10 +146,16 @@ export interface ShopifyOrder {
 }
 
 // Shopify API Configuration
-const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!;
-const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
+// Shopify API Configuration
+const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
-const endpoint = `https://${domain}/api/2024-01/graphql.json`;
+const getEndpoint = () => {
+  if (!domain) {
+    throw new Error('NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN is not defined');
+  }
+  return `https://${domain}/api/2024-01/graphql.json`;
+};
 
 interface ShopifyFetchOptions {
   query: string;
@@ -173,11 +179,11 @@ export async function shopifyFetch<T>({
   cache = 'force-cache',
   tags = [],
 }: ShopifyFetchOptions): Promise<T> {
-  const result = await fetch(endpoint, {
+  const result = await fetch(getEndpoint(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+      'X-Shopify-Storefront-Access-Token': storefrontAccessToken || '',
     },
     body: JSON.stringify({ query, variables }),
     cache,
