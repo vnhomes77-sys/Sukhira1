@@ -31,7 +31,9 @@ const KNOWN_COLLECTIONS: Record<string, string> = {
     'lawn-care': 'Lawn Care',
     'pests': 'Pest Control',
     'seasonal': 'Seasonal Advice',
-    'all': 'All Products'
+    'all': 'All Products',
+    'new-arrivals': 'New Arrivals',
+    'household-appliance-accessories': 'Household Appliance Accessories'
 };
 
 const VIDEO_MAP: Record<string, string> = {
@@ -56,6 +58,7 @@ async function getCollectionProducts(
             query: GET_COLLECTION_PRODUCTS,
             variables: { handle, first: 50, sortKey, reverse },
             tags: ['collection', handle],
+            cache: 'no-store'
         });
         return data.collection;
     } catch (error) {

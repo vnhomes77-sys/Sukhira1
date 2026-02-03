@@ -24,6 +24,7 @@ async function getProduct(handle: string) {
             query: GET_PRODUCT_BY_HANDLE,
             variables: { handle },
             tags: ['product', handle],
+            cache: 'no-store'
         });
         return data.product;
     } catch (error) {
