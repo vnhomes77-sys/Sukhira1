@@ -1,0 +1,66 @@
+
+import { shopifyFetch } from '@/lib/shopify';
+
+export const dynamic = 'force-dynamic';
+
+export default async function DebugPage() {
+    const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
+    const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+    let products = [];
+    let error = null;
+
+    try {
+        const data = await shopifyFetch({
+            query: `
+        query {
+          products(first: 5) {
+            edges {
+              node {
+                title
+                handle
+              }
+            }
+          }
+        }
+      `
+        });
+        products = data.products.edges;
+    } catch (e) {
+        error = e.message;
+    }
+
+    return (
+        <div className="p-8 font-mono text-sm">
+            <h1 className="text-xl font-bold mb-4">Debug Info</h1>
+
+            <div className="space-y-2 mb-8">
+                <div><strong>Domain Configured:</strong> {domain ? 'YES' : 'NO'} ({domain})</div>
+                <div><strong>Token Configured:</strong> {token ? 'YES' : 'NO'}</div>
+            </div>
+
+            <div className="mb-4">
+                <strong>API Connection Test:</strong>
+                {error ? (
+                    <div className="text-red-500 mt-2">
+                        Error: {error}
+                    </div>
+                ) : (
+                    <div className="text-green-500 mt-2">
+                        Success! Found {products.length} products.
+                    </div>
+                )}
+            </div>
+
+            {products.length > 0 && (
+                <ul className="list-disc pl-5">
+                    {products.map(({ node }) => (
+                        <li key={node.handle}>
+                            {node.title} (<a href={`/products/${node.handle}`} className="underline text-blue-500">{node.handle}</a>)
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+}
