@@ -190,6 +190,15 @@ export async function shopifyFetch<T>({
     next: { tags },
   });
 
+  const isJson = result.headers.get('content-type')?.includes('application/json');
+
+  if (!result.ok || !isJson) {
+    const text = await result.text();
+    console.error(`Shopify API Fetch Error: [${result.status}] ${result.statusText}`);
+    console.error('Response Body:', text);
+    throw new Error(`Shopify API Error (${result.status}): ${text.substring(0, 200)}...`);
+  }
+
   const json: ShopifyResponse<T> = await result.json();
 
   if (json.errors) {
