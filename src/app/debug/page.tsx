@@ -19,6 +19,8 @@ interface DebugProductsResponse {
 export default async function DebugPage() {
     const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
     const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+    const redirectUri = process.env.SHOPIFY_CUSTOMER_ACCOUNT_REDIRECT_URI;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
     let products: ShopifyProductEdge[] = [];
     let error: string | null = null;
@@ -54,6 +56,15 @@ export default async function DebugPage() {
             <div className="space-y-2 mb-8">
                 <div><strong>Domain Configured:</strong> {domain ? 'YES' : 'NO'} ({domain})</div>
                 <div><strong>Token Configured:</strong> {token ? 'YES' : 'NO'}</div>
+                <div className="pt-4 border-t border-gray-200 mt-4">
+                    <strong>Environment Check:</strong>
+                    <div className="text-xs break-all mt-1">
+                        <span className="text-gray-500">Redirect URI:</span> {redirectUri || 'UNDEFINED'}
+                    </div>
+                    <div className="text-xs break-all">
+                        <span className="text-gray-500">App URL:</span> {appUrl || 'UNDEFINED'}
+                    </div>
+                </div>
             </div>
 
             <div className="mb-4">
