@@ -76,7 +76,7 @@ async function getAllProductsFallback(
             products: { edges: { node: ShopifyProduct }[] };
         }>({
             query: GET_PRODUCTS,
-            variables: { first: 50, sortKey: productSortKey as any, reverse },
+            variables: { first: 50, sortKey: productSortKey, reverse },
             tags: ['products'],
         });
         return data.products;
@@ -132,7 +132,7 @@ export default async function CollectionPage({
     const { sort = 'default' } = await searchParams;
     const { sortKey, reverse } = getSortParams(sort);
 
-    let collection = await getCollectionProducts(handle, sortKey, reverse);
+    const collection = await getCollectionProducts(handle, sortKey, reverse);
     let products: ShopifyProduct[] = [];
     let title = '';
     let description = '';

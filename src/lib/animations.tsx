@@ -129,6 +129,7 @@ export function AnimatedSection({
                 visible: {
                     ...variants.visible,
                     transition: {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         ...(variants.visible as any)?.transition,
                         delay,
                     },

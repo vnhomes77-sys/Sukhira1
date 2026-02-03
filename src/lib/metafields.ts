@@ -43,7 +43,15 @@ export async function getWishlistFromMetafield(
             return [];
         }
 
-        const data = await response.json();
+        const data = (await response.json()) as {
+            data?: {
+                customer?: {
+                    metafield?: {
+                        value: string;
+                    };
+                };
+            };
+        };
         const value = data.data?.customer?.metafield?.value;
 
         if (!value) {
@@ -103,9 +111,18 @@ export async function saveWishlistToMetafield(
             return false;
         }
 
-        const data = await response.json();
+        const data = (await response.json()) as {
+            data?: {
+                customerMetafieldsSet?: {
+                    userErrors?: {
+                        field: string[];
+                        message: string;
+                    }[];
+                };
+            };
+        };
 
-        if (data.data?.customerMetafieldsSet?.userErrors?.length > 0) {
+        if (data.data?.customerMetafieldsSet?.userErrors && data.data.customerMetafieldsSet.userErrors.length > 0) {
             console.error('Metafield save errors:', data.data.customerMetafieldsSet.userErrors);
             return false;
         }

@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Package, Heart, User, Settings } from 'lucide-react';
+import { Package, Heart, Settings } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+
 
 export const metadata: Metadata = {
     title: 'My Account',

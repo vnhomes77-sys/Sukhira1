@@ -2,7 +2,7 @@
 // Note: This uses the new Customer Account API (2024+)
 
 const clientId = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID || '';
-const authDomain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_AUTH_DOMAIN || '';
+
 const redirectUri = process.env.SHOPIFY_CUSTOMER_ACCOUNT_REDIRECT_URI || '';
 const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
 
@@ -100,7 +100,12 @@ export async function exchangeToken(
     throw new Error(`Token exchange failed: ${error}`);
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+    id_token: string;
+  };
 
   return {
     accessToken: data.access_token,
@@ -134,7 +139,11 @@ export async function refreshAccessToken(refreshToken: string): Promise<{
     throw new Error('Failed to refresh token');
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+  };
 
   return {
     accessToken: data.access_token,
@@ -186,7 +195,18 @@ export async function getCustomer(accessToken: string): Promise<{
     return null;
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as {
+    data?: {
+      customer?: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        emailAddress?: { emailAddress: string };
+        phoneNumber?: { phoneNumber: string };
+      };
+    };
+    errors?: unknown[];
+  };
 
   if (data.errors) {
     console.error('Customer API Error:', data.errors);
@@ -260,6 +280,14 @@ export async function getCustomerOrders(accessToken: string) {
     return [];
   }
 
-  const data = await response.json();
-  return data.data?.customer?.orders?.edges?.map((e: { node: unknown }) => e.node) || [];
+  const data = (await response.json()) as {
+    data?: {
+      customer?: {
+        orders?: {
+          edges?: { node: unknown }[];
+        };
+      };
+    };
+  };
+  return data.data?.customer?.orders?.edges?.map((e) => e.node) || [];
 }

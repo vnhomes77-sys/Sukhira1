@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+
 
 export const metadata: Metadata = {
     title: 'My Profile',
