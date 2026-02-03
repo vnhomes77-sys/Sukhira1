@@ -49,6 +49,8 @@ export async function getAuthorizationUrl(): Promise<{
   const codeVerifier = generateCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+  const authDomain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_AUTH_DOMAIN?.replace('/account', '') || '';
+
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -60,7 +62,7 @@ export async function getAuthorizationUrl(): Promise<{
   });
 
   // Customer Account API authorization endpoint
-  const authUrl = `https://shopify.com/${shopDomain.replace('.myshopify.com', '')}/auth/oauth/authorize?${params.toString()}`;
+  const authUrl = `${authDomain}/auth/oauth/authorize?${params.toString()}`;
 
   return {
     url: authUrl,
@@ -79,7 +81,8 @@ export async function exchangeToken(
   expiresIn: number;
   idToken: string;
 }> {
-  const tokenEndpoint = `https://shopify.com/${shopDomain.replace('.myshopify.com', '')}/auth/oauth/token`;
+  const authDomain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_AUTH_DOMAIN?.replace('/account', '') || '';
+  const tokenEndpoint = `${authDomain}/auth/oauth/token`;
 
   const response = await fetch(tokenEndpoint, {
     method: 'POST',
@@ -121,7 +124,8 @@ export async function refreshAccessToken(refreshToken: string): Promise<{
   refreshToken: string;
   expiresIn: number;
 }> {
-  const tokenEndpoint = `https://shopify.com/${shopDomain.replace('.myshopify.com', '')}/auth/oauth/token`;
+  const authDomain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_AUTH_DOMAIN?.replace('/account', '') || '';
+  const tokenEndpoint = `${authDomain}/auth/oauth/token`;
 
   const response = await fetch(tokenEndpoint, {
     method: 'POST',
@@ -154,8 +158,8 @@ export async function refreshAccessToken(refreshToken: string): Promise<{
 
 // Customer Account API endpoint
 const getCustomerApiEndpoint = () => {
-  const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || '';
-  return `https://shopify.com/${domain.replace('.myshopify.com', '')}/account/customer/api/2024-01/graphql`;
+  const authDomain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_AUTH_DOMAIN?.replace('/account', '') || '';
+  return `${authDomain}/account/customer/api/2024-01/graphql`;
 };
 
 // Fetch customer data using Customer Account API
