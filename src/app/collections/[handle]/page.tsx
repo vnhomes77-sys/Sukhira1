@@ -33,7 +33,8 @@ const KNOWN_COLLECTIONS: Record<string, string> = {
     'seasonal': 'Seasonal Advice',
     'all': 'All Products',
     'new-arrivals': 'New Arrivals',
-    'household-appliance-accessories': 'Household Appliance Accessories'
+    'household-appliance-accessories': 'Household Appliance Accessories',
+    'best-sellers': 'Best Sellers'
 };
 
 const VIDEO_MAP: Record<string, string> = {
