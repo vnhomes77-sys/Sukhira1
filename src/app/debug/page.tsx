@@ -3,15 +3,28 @@ import { shopifyFetch } from '@/lib/shopify';
 
 export const dynamic = 'force-dynamic';
 
+interface ShopifyProductEdge {
+    node: {
+        title: string;
+        handle: string;
+    };
+}
+
+interface DebugProductsResponse {
+    products: {
+        edges: ShopifyProductEdge[];
+    };
+}
+
 export default async function DebugPage() {
     const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
     const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
-    let products = [];
-    let error = null;
+    let products: ShopifyProductEdge[] = [];
+    let error: string | null = null;
 
     try {
-        const data = await shopifyFetch({
+        const data = await shopifyFetch<DebugProductsResponse>({
             query: `
         query {
           products(first: 5) {
@@ -26,8 +39,12 @@ export default async function DebugPage() {
       `
         });
         products = data.products.edges;
-    } catch (e) {
-        error = e.message;
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            error = e.message;
+        } else {
+            error = String(e);
+        }
     }
 
     return (
