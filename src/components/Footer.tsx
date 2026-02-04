@@ -11,7 +11,6 @@ const footerLinks = {
         { href: '/collections/home-kitchen', label: 'Home & Kitchen' },
         { href: '/collections/electronics', label: 'Electronics' },
         { href: '/collections/new-arrivals', label: 'New Arrivals' },
-        { href: '/collections/sale', label: 'Sale' },
     ],
     support: [
         { href: '/pages/contact-us', label: 'Contact Us' },

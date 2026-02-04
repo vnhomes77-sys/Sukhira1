@@ -97,13 +97,27 @@ export function CategoryCards({ collections }: CategoryCardsProps) {
     );
 }
 
-// Static version with animations
+// Static version with animations and premium images
 export function CategoryCardsStatic() {
     const staticCategories = [
-        { handle: 'home-kitchen', title: 'Home & Kitchen', color: 'from-[#56AF31] to-[#2D5335]' },
-        { handle: 'electronics', title: 'Electronics', color: 'from-[#92D5F2] to-[#56AF31]' },
-        { handle: 'new-arrivals', title: 'New Arrivals', color: 'from-[#2D5335] to-[#1D1D1B]' },
-        { handle: 'sale', title: 'Sale', color: 'from-[#FFE900] to-[#56AF31]' },
+        {
+            handle: 'home-kitchen',
+            title: 'Home & Kitchen',
+            subtitle: 'Everyday essentials for your home',
+            image: '/images/home-kitchen.png'
+        },
+        {
+            handle: 'electronics',
+            title: 'Electronics',
+            subtitle: 'Smart gadgets & accessories',
+            image: '/images/electronics.png'
+        },
+        {
+            handle: 'new-arrivals',
+            title: 'New Arrivals',
+            subtitle: 'Latest products just added',
+            image: '/images/new-arrivals.png'
+        },
     ];
 
     return (
@@ -114,7 +128,7 @@ export function CategoryCardsStatic() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-12 tracking-tight"
+                    className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-12 tracking-tight text-[#111111]"
                 >
                     Shop by Category
                 </motion.h2>
@@ -123,36 +137,37 @@ export function CategoryCardsStatic() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: '-100px' }}
-                    className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+                    className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto"
                 >
-                    {staticCategories.map((category, index) => (
+                    {staticCategories.map((category) => (
                         <motion.div
                             key={category.handle}
                             variants={itemVariants}
-                            whileHover={{ y: -8 }}
+                            whileHover={{ y: -5 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <Link href={`/collections/${category.handle}`} className="group block">
-                                <Card className="overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 rounded-2xl">
-                                    <div className="relative aspect-[4/3] overflow-hidden">
-                                        <div
-                                            className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90 group-hover:opacity-100 transition-opacity duration-500`}
+                            <Link href={`/collections/${category.handle}`} className="group block relative">
+                                <Card className="overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 rounded-[16px] h-[320px] relative group cursor-pointer">
+                                    <div className="absolute inset-0">
+                                        <Image
+                                            src={category.image}
+                                            alt={category.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
-                                        {/* Decorative elements */}
-                                        <div className="absolute inset-0 opacity-20">
-                                            <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/20 blur-xl" />
-                                            <div className="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-white/10 blur-lg" />
-                                        </div>
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                                            <motion.h3
-                                                className="font-bold text-white text-xl md:text-2xl"
-                                                whileHover={{ scale: 1.05 }}
-                                            >
-                                                {category.title}
-                                            </motion.h3>
-                                            <p className="text-white/80 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                Explore →
-                                            </p>
+                                        {/* Soft Gradient Overlay */}
+                                        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors duration-500" />
+                                    </div>
+
+                                    <div className="absolute inset-0 flex flex-col justify-end p-8 text-white z-10">
+                                        <h3 className="font-bold text-2xl md:text-3xl mb-2 drop-shadow-md">
+                                            {category.title}
+                                        </h3>
+                                        <p className="text-white/90 text-sm md:text-base font-medium mb-4 opacity-90 group-hover:opacity-100 transition-opacity">
+                                            {category.subtitle}
+                                        </p>
+                                        <div className="inline-flex items-center text-sm font-semibold border border-white/30 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 w-fit group-hover:bg-white group-hover:text-black transition-all duration-300">
+                                            Shop Now
                                         </div>
                                     </div>
                                 </Card>

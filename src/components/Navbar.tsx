@@ -123,12 +123,7 @@ export function Navbar() {
                             </DropdownMenu>
                         </div>
 
-                        <Link
-                            href="/collections/sale"
-                            className="px-4 py-2 hover:bg-white/10 rounded-full text-sm font-medium transition-colors text-yellow-400"
-                        >
-                            Sale
-                        </Link>
+
 
                         {/* Plus Icon Action / More Menu */}
                         <div
@@ -241,7 +236,7 @@ export function Navbar() {
                             </button>
 
                             <nav className="flex flex-col gap-6 text-center">
-                                {[...navLinks, ...collectionsLinks, { href: '/collections/sale', label: 'Sale' }].map((link, i) => (
+                                {[...navLinks, ...collectionsLinks].map((link, i) => (
                                     <Link
                                         key={link.href}
                                         href={link.href}
