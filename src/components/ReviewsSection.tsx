@@ -8,28 +8,28 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const reviews = [
     {
         id: 1,
-        name: 'Sarah M.',
+        name: 'Aarav Patel',
         rating: 5,
         comment: 'Absolutely love the quality! Fast shipping and excellent customer service.',
         date: '2 weeks ago',
     },
     {
         id: 2,
-        name: 'John D.',
+        name: 'Riya Sharma',
         rating: 5,
         comment: 'Best purchase I\'ve made this year. Exceeded my expectations in every way.',
         date: '1 month ago',
     },
     {
         id: 3,
-        name: 'Emily R.',
+        name: 'Kunal Mehta',
         rating: 4,
         comment: 'Great products at reasonable prices. Will definitely shop here again.',
         date: '1 month ago',
     },
     {
         id: 4,
-        name: 'Michael T.',
+        name: 'Neha Desai',
         rating: 5,
         comment: 'The attention to detail is impressive. Highly recommend!',
         date: '2 months ago',
