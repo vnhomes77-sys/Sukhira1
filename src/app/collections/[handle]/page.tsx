@@ -157,8 +157,6 @@ export default async function CollectionPage({
         } else {
             notFound();
         }
-    } else {
-        notFound();
     }
 
     const videoSrc = VIDEO_MAP[handle];
