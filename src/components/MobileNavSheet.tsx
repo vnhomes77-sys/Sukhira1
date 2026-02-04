@@ -21,7 +21,7 @@ export function MobileNavSheet({ open, onOpenChange, navLinks }: MobileNavSheetP
                 <SheetHeader>
                     <SheetTitle className="text-left">
                         <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                            ShopStore
+                            Sukhira
                         </span>
                     </SheetTitle>
                 </SheetHeader>

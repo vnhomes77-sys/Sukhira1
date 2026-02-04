@@ -2,7 +2,7 @@ import { ShopifyProduct } from './shopify';
 import { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-const siteName = 'ShopStore';
+const siteName = 'Sukhira';
 
 export function generateProductJsonLd(product: ShopifyProduct, url: string) {
     const variant = product.variants.edges[0]?.node;

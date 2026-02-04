@@ -35,7 +35,7 @@ export function Footer() {
                     <div className="lg:col-span-2">
                         <Link href="/" className="inline-block mb-4">
                             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                                ShopStore
+                                Sukhira
                             </span>
                         </Link>
                         <p className="text-muted-foreground mb-4 max-w-sm">
