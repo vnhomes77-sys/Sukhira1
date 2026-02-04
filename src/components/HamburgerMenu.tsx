@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -66,17 +67,25 @@ export function HamburgerMenu() {
         setIsHovered(false);
     }, [pathname]);
 
-    // Handle Escape Key
+    // Handle Scroll Lock
     useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                setIsOpen(false);
-                setIsHovered(false);
-            }
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            // Start listening for Escape key to close
+            const handleKeyDown = (e: KeyboardEvent) => {
+                if (e.key === 'Escape') setIsOpen(false);
+            };
+            document.addEventListener('keydown', handleKeyDown);
+            return () => document.removeEventListener('keydown', handleKeyDown);
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
         };
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
-    }, []);
+    }, [isOpen]);
+
+
 
     // Handle Desktop Hover
     const handleMouseEnter = () => {
@@ -185,70 +194,98 @@ export function HamburgerMenu() {
                 )}
             </AnimatePresence>
 
-            {/* Mobile Drawer Overlay */}
-            <AnimatePresence>
-                {isOpen && (
+            {/* Mobile Drawer Overlay via Portal */}
+            <MobileDrawerPortal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        </div>
+    );
+}
+
+function MobileDrawerPortal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
+    if (!mounted) return null;
+
+    // We use document.body as the container for the portal
+    return createPortal(
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 50 }}
+                    className="fixed inset-0 z-[9999] md:hidden"
+                >
+                    {/* Dark Overlay - Explicitly separate div to handle clicks */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] md:hidden bg-black/60 backdrop-blur-sm"
-                        onClick={() => setIsOpen(false)}
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        onClick={onClose}
+                    />
+
+                    {/* Drawer Content */}
+                    <motion.div
+                        initial={{ x: '-100%' }}
+                        animate={{ x: 0 }}
+                        exit={{ x: '-100%' }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        className="absolute inset-y-0 left-0 w-[82vw] max-w-[360px] bg-[#111111] shadow-2xl flex flex-col h-full overflow-y-auto border-r border-white/10 z-10"
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        <motion.div
-                            initial={{ x: '-100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '-100%' }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                            className="absolute inset-y-0 left-0 w-[300px] bg-[#1D1D1B] shadow-2xl p-6 flex flex-col h-full overflow-y-auto border-r border-white/10"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <div className="flex justify-between items-center mb-8">
-                                <Link href="/" onClick={() => setIsOpen(false)} className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
-                                    <img src="/images/sukhira-logo.png" alt="Sukhira Logo" className="h-full w-full object-cover" />
-                                </Link>
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="p-2 text-white/70 hover:text-white rounded-full hover:bg-white/10"
-                                >
-                                    <X className="h-6 w-6" />
-                                </button>
-                            </div>
+                        <div className="flex justify-between items-center p-6 border-b border-white/5">
+                            <Link href="/" onClick={onClose} className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
+                                <img src="/images/sukhira-logo.png" alt="Sukhira Logo" className="h-full w-full object-cover" />
+                            </Link>
+                            <button
+                                onClick={onClose}
+                                className="p-2 text-white/70 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
 
-                            <div className="flex-1 space-y-8">
-                                {menuSections.map((section) => (
-                                    <div key={section.title} className="space-y-4">
-                                        <h3 className="text-xs font-bold text-[#56AF31] uppercase tracking-widest pl-2">
-                                            {section.title}
-                                        </h3>
-                                        <div className="flex flex-col space-y-1">
-                                            {section.items.map((item) => (
-                                                <Link
-                                                    key={item.label}
-                                                    href={item.url}
-                                                    className="flex items-center justify-between px-3 py-3 text-white/90 hover:bg-white/5 rounded-lg active:bg-white/10 transition-colors"
-                                                >
-                                                    <span className="font-medium">{item.label}</span>
-                                                    <ChevronRight className="h-4 w-4 opacity-30" />
-                                                </Link>
-                                            ))}
-                                        </div>
+                        <div className="flex-1 overflow-y-auto py-6 px-6 space-y-8">
+                            {menuSections.map((section) => (
+                                <div key={section.title} className="space-y-3">
+                                    <h3 className="text-xs font-bold text-[#56AF31] uppercase tracking-widest pl-2 opacity-80">
+                                        {section.title}
+                                    </h3>
+                                    <div className="flex flex-col space-y-1">
+                                        {section.items.map((item) => (
+                                            <Link
+                                                key={item.label}
+                                                href={item.url}
+                                                onClick={onClose}
+                                                className="flex items-center justify-between px-3 py-3 text-white/90 hover:bg-white/5 rounded-lg active:bg-white/10 transition-colors"
+                                            >
+                                                <span className="font-medium text-[15px]">{item.label}</span>
+                                                <ChevronRight className="h-4 w-4 opacity-30" />
+                                            </Link>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
+                        </div>
 
-                            <div className="mt-8 pt-6 border-t border-white/10">
-                                <Link
-                                    href="/account/login"
-                                    className="flex items-center justify-center w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl text-white font-medium transition-colors"
-                                >
-                                    Login / Register
-                                </Link>
-                            </div>
-                        </motion.div>
+                        <div className="p-6 border-t border-white/10 bg-[#141414]">
+                            <Link
+                                href="/account/login"
+                                onClick={onClose}
+                                className="flex items-center justify-center w-full py-3 bg-white/5 hover:bg-white/10 active:bg-white/15 rounded-xl text-white font-medium transition-colors border border-white/5"
+                            >
+                                Login / Register
+                            </Link>
+                        </div>
                     </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
+                </motion.div>
+            )}
+        </AnimatePresence>,
+        document.body
     );
 }
