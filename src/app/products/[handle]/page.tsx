@@ -170,16 +170,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     product={product}
                                     variants={variants}
                                     options={product.options}
+                                    title={product.title}
+                                    handle={product.handle}
+                                    featuredImage={product.featuredImage}
                                 />
 
                                 <div className="mt-4 flex items-center justify-center gap-6 text-sm text-[#444444]">
                                     <div className="flex items-center gap-2">
                                         <div className="w-2 h-2 rounded-full bg-[#6e8b63] animate-pulse" />
                                         In Stock & Ready to Ship
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <WishlistButton product={product} variant="icon" />
-                                        <span className="text-xs">Add to Wishlist</span>
                                     </div>
                                 </div>
                             </div>

@@ -10,7 +10,8 @@ import {
     Menu,
     X,
     ChevronDown,
-    Plus
+    Plus,
+    Heart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -43,6 +44,7 @@ export function Navbar() {
     const [searchOpen, setSearchOpen] = useState(false);
     const { openCart, totalQuantity } = useCart();
     const { customer, isLoggedIn } = useAuth();
+    const { itemCount: wishlistCount } = useWishlist();
 
     // Handle scroll
     useEffect(() => {

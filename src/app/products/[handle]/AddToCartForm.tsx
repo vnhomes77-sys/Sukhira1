@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { WishlistButton } from '@/components/WishlistButton';
 import {
     Select,
     SelectContent,
@@ -24,9 +25,12 @@ interface AddToCartFormProps {
         name: string;
         values: string[];
     }[];
+    title: string;
+    handle: string;
+    featuredImage: { url: string } | null;
 }
 
-export function AddToCartForm({ product, variants, options }: AddToCartFormProps) {
+export function AddToCartForm({ product, variants, options, title, handle, featuredImage }: AddToCartFormProps) {
     const { addToCart, isLoading } = useCart();
     const [quantity, setQuantity] = useState(1);
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() => {
@@ -59,6 +63,24 @@ export function AddToCartForm({ product, variants, options }: AddToCartFormProps
             addToCart(selectedVariant.id, quantity);
         }
     };
+
+    // Prepare product object for WishlistButton
+    const productInfo = {
+        id: product.id,
+        handle: handle,
+        title: title,
+        featuredImage: featuredImage,
+        priceRange: { minVariantPrice: variants[0]?.price ? { amount: variants[0].price.amount } : { amount: '0' } },
+        variants: { edges: variants.map(v => ({ node: { id: v.id } })) }
+    };
+
+    // WAIT: AddToCartForm props are incomplete for WishlistButton!
+    // Props: product: { id, availableForSale }, variants: ShopifyProductVariant[], options: {...}[]
+    // I am missing: title, handle, featuredImage (maybe in variants?), priceRange (in variants?)
+    // This component relies on parent to pass just enough for logic.
+    // I need to update AddToCartFormProps to include more data or pass it down.
+
+    // I will skip this edit for now and fix props first.
 
     return (
         <div className="space-y-4">
@@ -111,15 +133,23 @@ export function AddToCartForm({ product, variants, options }: AddToCartFormProps
             </div>
 
             {/* Add to Cart Button */}
-            <Button
-                className="w-full h-12 text-lg"
-                size="lg"
-                onClick={handleAddToCart}
-                disabled={!isAvailable || isLoading}
-            >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                {isAvailable ? 'Add to Cart' : 'Sold Out'}
-            </Button>
+            <div className="flex gap-2">
+                <Button
+                    className="flex-1 h-12 text-lg"
+                    size="lg"
+                    onClick={handleAddToCart}
+                    disabled={!isAvailable || isLoading}
+                >
+                    <ShoppingCart className="h-5 w-5 mr-2" />
+                    {isAvailable ? 'Add to Cart' : 'Sold Out'}
+                </Button>
+
+                <WishlistButton
+                    product={productInfo}
+                    variant="full"
+                    className="h-12 w-12 p-0 flex-shrink-0 border-[#e6e2d9] hover:bg-[#f7f5ee] hover:text-[#56AF31] text-[#111111]"
+                />
+            </div>
         </div>
     );
 }
