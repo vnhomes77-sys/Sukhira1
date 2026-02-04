@@ -56,7 +56,8 @@ export function Navbar() {
 
     const updatedNavLinks = [
         ...navLinks,
-        { href: '/collections/new-arrivals', label: 'New Arrivals' }
+        { href: '/collections/new-arrivals', label: 'New Arrivals' },
+        { href: '/collections', label: 'Collections' }
     ];
 
     return (

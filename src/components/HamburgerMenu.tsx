@@ -12,11 +12,12 @@ import { usePathname } from 'next/navigation';
 // Menu Data Structure
 const menuSections = [
     {
-        title: "Shop",
+        title: "Collections",
         items: [
             { label: "Home & Kitchen", url: "/collections/home-kitchen" },
             { label: "Electronics", url: "/collections/electronics" },
-            { label: "New Arrivals", url: "/collections/new-arrivals" }
+            { label: "New Arrivals", url: "/collections/new-arrivals" },
+            { label: "View All Products", url: "/collections/all" }
         ]
     },
     {
