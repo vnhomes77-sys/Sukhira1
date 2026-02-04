@@ -7,7 +7,6 @@ import {
     Search,
     ShoppingCart,
     User,
-    Menu,
     X,
     ChevronDown,
     Plus,
@@ -26,6 +25,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/context/AuthContext';
 import { SmartSearch } from '@/components/SmartSearch';
+import { HamburgerMenu } from '@/components/HamburgerMenu';
 
 const navLinks = [
     { href: '/collections/home-kitchen', label: 'Home & Kitchen' },
@@ -40,7 +40,6 @@ const collectionsLinks = [
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const { openCart, totalQuantity } = useCart();
     const { customer, isLoggedIn } = useAuth();
@@ -65,6 +64,11 @@ export function Navbar() {
             <header className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
                 {/* Main Glass Pill Container */}
                 <nav className="pointer-events-auto flex items-center bg-[#141414]/55 backdrop-blur-md border border-white/10 rounded-full p-2 shadow-[0_12px_30px_rgba(0,0,0,0.25)] transition-all">
+
+                    {/* Hamburger Menu (Mega Menu) */}
+                    <div className="mr-2">
+                        <HamburgerMenu />
+                    </div>
 
                     {/* Logo (Inside Pill) */}
                     <Link href="/" className="flex items-center justify-center h-10 w-10 md:h-11 md:w-11 bg-white rounded-full mr-2 hover:scale-105 transition-transform flex-shrink-0 overflow-hidden">
@@ -95,6 +99,27 @@ export function Navbar() {
                             <Search className="h-[18px] w-[18px]" />
                         </button>
 
+                        {/* Wishlist */}
+                        <Link href="/wishlist">
+                            <div className="relative h-10 w-10 flex items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-all">
+                                <Heart className="h-[18px] w-[18px]" />
+                                <AnimatePresence>
+                                    {wishlistCount > 0 && (
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            exit={{ scale: 0 }}
+                                            className="absolute top-0 right-0"
+                                        >
+                                            <div className="h-3.5 w-3.5 bg-[#56AF31] rounded-full flex items-center justify-center text-[9px] text-white font-bold border border-[#141414]">
+                                                {wishlistCount}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </Link>
+
                         {/* Cart */}
                         <button
                             onClick={openCart}
@@ -123,14 +148,6 @@ export function Navbar() {
                                 <User className="h-[18px] w-[18px]" />
                             </div>
                         </Link>
-
-                        {/* Mobile Menu Trigger */}
-                        <button
-                            onClick={() => setMobileMenuOpen(true)}
-                            className="md:hidden h-10 w-10 flex items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-all ml-1"
-                        >
-                            <Menu className="h-5 w-5" />
-                        </button>
                     </div>
                 </nav>
             </header>
@@ -160,51 +177,6 @@ export function Navbar() {
                                 <X className="h-8 w-8" />
                             </button>
                         </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Mobile Menu Overlay */}
-            <AnimatePresence>
-                {mobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, x: '100%' }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: '100%' }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="fixed inset-y-0 right-0 z-[100] w-full sm:w-80 bg-[#1D1D1B] shadow-2xl p-6 flex flex-col"
-                    >
-                        <div className="flex justify-between items-center mb-8">
-                            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
-                                <img src="/images/sukhira-logo.png" alt="Sukhira Logo" className="h-full w-full object-cover" />
-                            </div>
-                            <button
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="p-2 text-white/70 hover:text-white rounded-full hover:bg-white/10"
-                            >
-                                <X className="h-6 w-6" />
-                            </button>
-                        </div>
-
-                        <nav className="flex flex-col gap-4">
-                            {[...updatedNavLinks, ...collectionsLinks].map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="text-lg font-medium text-white/90 hover:text-[#56AF31] py-2 border-b border-white/5"
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                            <Link
-                                href={isLoggedIn ? "/account" : "/account/login"}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="text-lg font-medium text-white/90 hover:text-[#56AF31] py-2 border-b border-white/5 mt-2"
-                            >
-                                {isLoggedIn ? "My Account" : "Login / Register"}
-                            </Link>
-                        </nav>
                     </motion.div>
                 )}
             </AnimatePresence>
