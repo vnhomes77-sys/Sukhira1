@@ -111,9 +111,9 @@ export default function LoginPage() {
                             Create one
                         </Link>
                     </p>
-                    <p className="text-xs text-muted-foreground hover:text-[#111] cursor-pointer">
+                    <Link href="/account/recover" className="text-xs text-muted-foreground hover:text-[#111] cursor-pointer">
                         Forgot your password?
-                    </p>
+                    </Link>
                 </CardFooter>
             </Card>
         </div>
