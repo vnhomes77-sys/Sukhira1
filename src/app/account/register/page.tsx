@@ -1,20 +1,3 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-
-export const metadata: Metadata = {
-    title: 'Create Account',
-    description: 'Create a new account',
-};
-
 'use client';
 
 import { useActionState, useState, useEffect } from 'react';

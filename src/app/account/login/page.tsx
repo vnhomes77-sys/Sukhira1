@@ -1,20 +1,3 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-
-export const metadata: Metadata = {
-    title: 'Log in',
-    description: 'Log in to your account',
-};
-
 'use client';
 
 import { useActionState, useState, useEffect } from 'react';
@@ -128,7 +111,6 @@ export default function LoginPage() {
                             Create one
                         </Link>
                     </p>
-                    {/* Placeholder for Recover Pwd Modal Trigger if needed, or separate page */}
                     <p className="text-xs text-muted-foreground hover:text-[#111] cursor-pointer">
                         Forgot your password?
                     </p>
