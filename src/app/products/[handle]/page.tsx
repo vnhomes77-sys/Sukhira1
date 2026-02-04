@@ -1,5 +1,9 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { ChevronRight, Home } from 'lucide-react';
+
+/* Components */
 import { ProductGallery } from '@/components/ProductGallery';
 import { WishlistButton } from '@/components/WishlistButton';
 import { CompareButton } from '@/components/CompareButton';
@@ -9,6 +13,14 @@ import { TrackRecentlyViewed } from './TrackRecentlyViewed';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+/* PDP Specific Components */
+import { TrustBar } from '@/components/pdp/TrustBar';
+import { ProductFAQ } from '@/components/pdp/ProductFAQ';
+import { ShippingReturnsCards } from '@/components/pdp/ShippingReturnsCards';
+import { KeyBenefits } from '@/components/pdp/KeyBenefits';
+
+/* Libs */
 import { shopifyFetch, ShopifyProduct, extractNodes } from '@/lib/shopify';
 import { GET_PRODUCT_BY_HANDLE } from '@/lib/queries';
 import { generateProductMetadata, generateProductJsonLd } from '@/lib/seo';
@@ -78,7 +90,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     );
 
     return (
-        <>
+        <div className="bg-[#f7f5ee] min-h-screen text-[#111111]">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -86,114 +98,159 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <TrackRecentlyViewed product={product} />
 
-            <div className="container mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                    {/* Product Gallery */}
-                    <div className="group">
-                        <ProductGallery images={images} title={product.title} />
+            <div className="container mx-auto px-4 py-6 md:py-10">
+                {/* Breadcrumbs */}
+                <nav className="flex items-center gap-2 text-sm text-[#666666] mb-8 overflow-x-auto whitespace-nowrap pb-2">
+                    <Link href="/" className="hover:text-[#111111] transition-colors flex items-center gap-1">
+                        <Home className="h-4 w-4" />
+                        Home
+                    </Link>
+                    <ChevronRight className="h-4 w-4 opacity-50" />
+                    <Link href="/collections/all" className="hover:text-[#111111] transition-colors">
+                        Products
+                    </Link>
+                    <ChevronRight className="h-4 w-4 opacity-50" />
+                    <span className="font-medium text-[#111111]">{product.title}</span>
+                </nav>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+                    {/* Left Column: Gallery */}
+                    <div className="space-y-8">
+                        <div className="bg-white rounded-[14px] p-2 border border-[#e6e2d9] shadow-sm sticky top-24">
+                            <ProductGallery images={images} title={product.title} />
+                        </div>
+
+                        {/* Trust Bar below gallery on desktop */}
+                        <div className="hidden lg:block">
+                            <TrustBar />
+                        </div>
                     </div>
 
-                    {/* Product Info */}
-                    <div className="space-y-6">
-                        {/* Title and Vendor */}
+                    {/* Right Column: Info */}
+                    <div className="space-y-8">
                         <div>
-                            <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">
-                                {product.vendor}
-                            </p>
-                            <h1 className="text-3xl md:text-4xl font-bold mb-4">{product.title}</h1>
+                            {product.vendor && (
+                                <p className="text-sm font-medium text-[#6e8b63] uppercase tracking-wider mb-3">
+                                    {product.vendor}
+                                </p>
+                            )}
+                            <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight text-[#111111]">
+                                {product.title}
+                            </h1>
 
-                            {/* Badges */}
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                {hasDiscount && (
-                                    <Badge variant="destructive">Save {discountPercent}%</Badge>
-                                )}
-                                {!product.availableForSale && (
-                                    <Badge variant="secondary">Sold Out</Badge>
-                                )}
-                                {product.productType && (
-                                    <Badge variant="outline">{product.productType}</Badge>
-                                )}
-                            </div>
-
-                            {/* Price */}
-                            <div className="flex items-center gap-3">
-                                <span className="text-2xl font-bold">
+                            {/* Price Block */}
+                            <div className="flex flex-wrap items-center gap-4 mb-6">
+                                <div className="text-3xl font-bold text-[#111111]">
                                     {formatMoney(product.priceRange.minVariantPrice)}
-                                </span>
+                                </div>
                                 {hasDiscount && (
-                                    <span className="text-lg text-muted-foreground line-through">
-                                        {formatMoney(product.compareAtPriceRange.minVariantPrice)}
-                                    </span>
+                                    <>
+                                        <div className="text-xl text-[#888888] line-through decoration-slate-400">
+                                            {formatMoney(product.compareAtPriceRange.minVariantPrice)}
+                                        </div>
+                                        <Badge className="bg-[#e53e3e] hover:bg-[#c53030] text-white border-none rounded-md px-3 py-1 text-sm">
+                                            Save {discountPercent}%
+                                        </Badge>
+                                    </>
                                 )}
+                            </div>
+
+                            {!product.availableForSale && (
+                                <Badge variant="secondary" className="mb-4 text-base px-4 py-1">Sold Out</Badge>
+                            )}
+
+                            {/* Short Description (if short) or just Key Benefits */}
+                            <KeyBenefits />
+
+                            <Separator className="my-8 bg-[#e6e2d9]" />
+
+                            {/* Add to Cart Actions */}
+                            <div className="bg-white p-6 rounded-[14px] border border-[#e6e2d9] shadow-sm">
+                                <AddToCartForm
+                                    product={product}
+                                    variants={variants}
+                                    options={product.options}
+                                />
+
+                                <div className="mt-4 flex items-center justify-center gap-6 text-sm text-[#444444]">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-[#6e8b63] animate-pulse" />
+                                        In Stock & Ready to Ship
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <WishlistButton product={product} variant="icon" />
+                                        <span className="text-xs">Add to Wishlist</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <Separator />
-
-                        {/* Add to Cart Form */}
-                        <AddToCartForm
-                            product={product}
-                            variants={variants}
-                            options={product.options}
-                        />
-
-                        {/* Wishlist & Compare */}
-                        <div className="flex gap-3">
-                            <WishlistButton product={product} variant="full" />
-                            <CompareButton product={product} variant="full" />
-                        </div>
-
-                        <Separator />
-
-                        {/* Product Details Tabs */}
+                        {/* Tabs: Description & Specs */}
                         <Tabs defaultValue="description" className="w-full">
-                            <TabsList className="w-full">
-                                <TabsTrigger value="description" className="flex-1">
+                            <TabsList className="w-full bg-white border border-[#e6e2d9] rounded-[14px] p-1 h-auto">
+                                <TabsTrigger
+                                    value="description"
+                                    className="flex-1 py-3 data-[state=active]:bg-[#111111] data-[state=active]:text-white rounded-[10px]"
+                                >
                                     Description
                                 </TabsTrigger>
-                                <TabsTrigger value="details" className="flex-1">
-                                    Details
+                                <TabsTrigger
+                                    value="specs"
+                                    className="flex-1 py-3 data-[state=active]:bg-[#111111] data-[state=active]:text-white rounded-[10px]"
+                                >
+                                    Specifications
                                 </TabsTrigger>
                             </TabsList>
-                            <TabsContent value="description" className="pt-4">
+                            <TabsContent value="description" className="pt-6 px-2">
                                 <div
-                                    className="prose prose-sm max-w-none text-muted-foreground"
+                                    className="prose prose-stone max-w-none text-[#444444] prose-headings:text-[#111111] prose-a:text-[#6e8b63]"
                                     dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                                 />
                             </TabsContent>
-                            <TabsContent value="details" className="pt-4">
-                                <dl className="space-y-3 text-sm">
-                                    <div className="flex justify-between">
-                                        <dt className="text-muted-foreground">Vendor</dt>
-                                        <dd className="font-medium">{product.vendor}</dd>
-                                    </div>
-                                    {product.productType && (
-                                        <div className="flex justify-between">
-                                            <dt className="text-muted-foreground">Type</dt>
-                                            <dd className="font-medium">{product.productType}</dd>
+                            <TabsContent value="specs" className="pt-6 px-2">
+                                <div className="border border-[#e6e2d9] rounded-xl overflow-hidden bg-white">
+                                    <dl className="divide-y divide-[#e6e2d9]">
+                                        <div className="flex justify-between p-4 bg-[#f9f9f9]">
+                                            <dt className="text-sm font-medium text-[#666]">Vendor</dt>
+                                            <dd className="text-sm font-semibold text-[#111]">{product.vendor}</dd>
                                         </div>
-                                    )}
-                                    {product.tags.length > 0 && (
-                                        <div className="flex justify-between">
-                                            <dt className="text-muted-foreground">Tags</dt>
-                                            <dd className="font-medium">{product.tags.join(', ')}</dd>
+                                        {product.productType && (
+                                            <div className="flex justify-between p-4 bg-white">
+                                                <dt className="text-sm font-medium text-[#666]">Type</dt>
+                                                <dd className="text-sm font-semibold text-[#111]">{product.productType}</dd>
+                                            </div>
+                                        )}
+                                        {/* Mock Specs based on requirements */}
+                                        <div className="flex justify-between p-4 bg-[#f9f9f9]">
+                                            <dt className="text-sm font-medium text-[#666]">Return Policy</dt>
+                                            <dd className="text-sm font-semibold text-[#111]">7 Days</dd>
                                         </div>
-                                    )}
-                                    <div className="flex justify-between">
-                                        <dt className="text-muted-foreground">Availability</dt>
-                                        <dd className="font-medium">
-                                            {product.availableForSale ? 'In Stock' : 'Out of Stock'}
-                                        </dd>
-                                    </div>
-                                </dl>
+                                    </dl>
+                                </div>
                             </TabsContent>
                         </Tabs>
+
+                        {/* Shipping Cards */}
+                        <ShippingReturnsCards />
+
+                        {/* Trust Bar (Mobile only) */}
+                        <div className="lg:hidden">
+                            <TrustBar />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Recently Viewed */}
-            <RecentlyViewedSection currentProductId={product.id} />
-        </>
+                {/* FAQ Section */}
+                <ProductFAQ />
+
+                <Separator className="my-12 bg-[#e6e2d9]" />
+
+                {/* Recently Viewed */}
+                <RecentlyViewedSection currentProductId={product.id} />
+
+                {/* Bottom Sticky Bar for Mobile (Optional implementation here or in Layout/Global) */}
+            </div>
+        </div>
     );
 }
+
