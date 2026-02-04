@@ -40,17 +40,14 @@ export async function login(prevState: any, formData: FormData) {
             // Set cookie securely
             const cookieStore = await cookies();
             cookieStore.set('customer_access_token', customerAccessToken.accessToken, {
-                httpOnly: false, // Allow client-side read if needed by AuthContext (AuthContext uses js-cookie)
-                // However, optimal security is httpOnly: true. 
-                // But AuthContext implementation I saw earlier reads it via `Cookies.get()`. 
-                // If I set httpOnly: true, client JS cannot read it.
-                // The current AuthContext uses `Cookies.get('customer_access_token')` in `useEffect`.
-                // So it MUST be accessible to JS, or I must update AuthContext to rely on a server check only.
-                // For now, to match existing architecture, I will allow JS access, but secure it as much as possible.
+                httpOnly: false, // Allow client-side read for AuthContext
                 secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
                 expires: new Date(customerAccessToken.expiresAt),
                 path: '/',
             });
+
+            // Also set a refresh token if available (implementation dependent, usually not in this basic flow)
 
             return { success: true };
         }
@@ -67,6 +64,7 @@ export async function register(prevState: any, formData: FormData) {
     const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+    const acceptsMarketing = formData.get('acceptsMarketing') === 'on';
 
     if (!email || !password || !firstName || !lastName) {
         return { success: false, message: 'Please fill in all fields.' };
@@ -81,7 +79,13 @@ export async function register(prevState: any, formData: FormData) {
         }>({
             query: CUSTOMER_CREATE,
             variables: {
-                input: { firstName, lastName, email, password },
+                input: {
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    acceptsMarketing
+                },
             },
             cache: 'no-store',
         });
