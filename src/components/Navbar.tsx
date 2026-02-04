@@ -65,8 +65,8 @@ export function Navbar() {
                 <nav className="pointer-events-auto flex items-center bg-[#141414]/55 backdrop-blur-md border border-white/10 rounded-full p-2 shadow-[0_12px_30px_rgba(0,0,0,0.25)] transition-all">
 
                     {/* Logo (Inside Pill) */}
-                    <Link href="/" className="flex items-center justify-center h-10 w-10 md:h-11 md:w-11 bg-white rounded-full mr-2 hover:scale-105 transition-transform flex-shrink-0">
-                        <span className="font-bold text-xl text-black">S</span>
+                    <Link href="/" className="flex items-center justify-center h-10 w-10 md:h-11 md:w-11 bg-white rounded-full mr-2 hover:scale-105 transition-transform flex-shrink-0 overflow-hidden">
+                        <img src="/images/sukhira-logo.png" alt="Sukhira Logo" className="h-full w-full object-cover" />
                     </Link>
 
                     {/* Desktop Links */}
@@ -173,8 +173,8 @@ export function Navbar() {
                         className="fixed inset-y-0 right-0 z-[100] w-full sm:w-80 bg-[#1D1D1B] shadow-2xl p-6 flex flex-col"
                     >
                         <div className="flex justify-between items-center mb-8">
-                            <div className="h-10 w-10 bg-[#56AF31] rounded-full flex items-center justify-center text-white shadow-md">
-                                <span className="font-bold text-xl">S</span>
+                            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
+                                <img src="/images/sukhira-logo.png" alt="Sukhira Logo" className="h-full w-full object-cover" />
                             </div>
                             <button
                                 onClick={() => setMobileMenuOpen(false)}

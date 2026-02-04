@@ -20,8 +20,8 @@ export function MobileNavSheet({ open, onOpenChange, navLinks }: MobileNavSheetP
             <SheetContent side="left" className="w-[300px] sm:w-[350px]">
                 <SheetHeader>
                     <SheetTitle className="text-left">
-                        <div className="h-10 w-10 bg-[#56AF31] rounded-full flex items-center justify-center text-white shadow-md">
-                            <span className="font-bold text-xl">S</span>
+                        <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
+                            <img src="/images/sukhira-logo.png" alt="Sukhira Logo" className="h-full w-full object-cover" />
                         </div>
                     </SheetTitle>
                 </SheetHeader>
