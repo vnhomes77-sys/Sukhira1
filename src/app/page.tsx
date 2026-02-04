@@ -50,7 +50,7 @@ export default async function HomePage() {
       {/* Video Hero Section - Full screen with text overlay */}
       <VideoSection
         title="Discover Premium Products"
-        subtitle="Shop the latest in home & kitchen and electronics. Quality guaranteed with free shipping on orders over $50."
+        subtitle="Shop the latest in home & kitchen and electronics. Quality guaranteed with free shipping on orders over ₹ 499."
         videoType="self-hosted"
         videoSrc="/videos/_type_video_1080p_202602022223.mp4"
         ctaText="Shop Now"
