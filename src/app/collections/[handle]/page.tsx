@@ -145,13 +145,17 @@ export default async function CollectionPage({
         products = extractNodes(collection.products.edges);
         title = collection.title;
         description = collection.description;
-    } else if (KNOWN_COLLECTIONS[handle]) {
-        // Fallback: Fetch all products if collection doesn't exist but is a known route
-        const fallbackData = await getAllProductsFallback(sortKey, reverse);
-        if (fallbackData) {
-            products = extractNodes(fallbackData.edges);
+    } else {
+        // Strict Mode: If collection doesn't exist in Shopify, show 404 or empty state.
+        // Do NOT fallback to "All Products" to avoid cross-contamination.
+        if (KNOWN_COLLECTIONS[handle]) {
+            // Optional: You could show a "Coming Soon" state here instead of 404
+            // but user requested strict filtering.
             title = KNOWN_COLLECTIONS[handle];
             description = `Explore our ${KNOWN_COLLECTIONS[handle]} collection.`;
+            // Leave products empty
+        } else {
+            notFound();
         }
     } else {
         notFound();

@@ -13,7 +13,11 @@ async function getBestSellers() {
       products: { edges: { node: ShopifyProduct }[] };
     }>({
       query: GET_PRODUCTS,
-      variables: { first: 8, sortKey: 'BEST_SELLING' },
+      variables: {
+        first: 8,
+        sortKey: 'BEST_SELLING',
+        query: 'tag:bestseller' // Strict filtering
+      },
       tags: ['products'],
     });
     return extractNodes(data.products.edges);
@@ -29,7 +33,12 @@ async function getNewArrivals() {
       products: { edges: { node: ShopifyProduct }[] };
     }>({
       query: GET_PRODUCTS,
-      variables: { first: 4, sortKey: 'CREATED_AT', reverse: true },
+      variables: {
+        first: 4,
+        sortKey: 'CREATED_AT',
+        reverse: true,
+        query: 'tag:new' // Strict filtering
+      },
       tags: ['products'],
     });
     return extractNodes(data.products.edges);

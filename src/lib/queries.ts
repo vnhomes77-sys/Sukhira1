@@ -270,8 +270,8 @@ export const GET_PRODUCT_BY_HANDLE = `
 `;
 
 export const GET_PRODUCTS = `
-  query getProducts($first: Int!, $sortKey: ProductSortKeys, $reverse: Boolean) {
-    products(first: $first, sortKey: $sortKey, reverse: $reverse) {
+  query getProducts($first: Int!, $sortKey: ProductSortKeys, $reverse: Boolean, $query: String) {
+    products(first: $first, sortKey: $sortKey, reverse: $reverse, query: $query) {
       edges {
         node {
           ...ProductCardFragment
