@@ -47,11 +47,44 @@ export function Footer() {
                             <p className="text-sm text-muted-foreground mb-3">
                                 Get the latest updates on new products and upcoming sales.
                             </p>
-                            <form className="flex gap-2 max-w-sm">
+                            <form
+                                onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    const form = e.currentTarget;
+                                    const formData = new FormData(form);
+
+                                    // Basic client-side feedback
+                                    const button = form.querySelector('button');
+                                    if (button) button.disabled = true;
+
+                                    try {
+                                        const { subscribeToNewsletter } = await import('@/app/actions');
+                                        const { toast } = await import('sonner');
+
+                                        const result = await subscribeToNewsletter(null, formData);
+
+                                        if (result.success) {
+                                            toast.success(result.message, {
+                                                description: "You've been added to our mailing list."
+                                            });
+                                            form.reset();
+                                        } else {
+                                            toast.error(result.message);
+                                        }
+                                    } catch (err) {
+                                        console.error(err);
+                                    } finally {
+                                        if (button) button.disabled = false;
+                                    }
+                                }}
+                                className="flex gap-2 max-w-sm"
+                            >
                                 <Input
                                     type="email"
+                                    name="email"
                                     placeholder="Enter your email"
                                     className="flex-1"
+                                    required
                                 />
                                 <Button type="submit" size="icon">
                                     <Mail className="h-4 w-4" />
