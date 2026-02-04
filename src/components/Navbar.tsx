@@ -71,13 +71,7 @@ export function Navbar() {
                         <div className="h-10 w-10 md:h-12 md:w-12 bg-[#56AF31] rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
                             <span className="font-bold text-xl">S</span>
                         </div>
-                        {/* Hide text on mobile to save space, or keep it if it fits */}
-                        <span className={cn(
-                            "text-xl font-bold tracking-tight text-white drop-shadow-md hidden md:block opacity-0 lg:opacity-100 transition-opacity",
-                            scrolled && "lg:opacity-0" // Optional: Hide label on scroll for cleaner look
-                        )}>
-                            Sukhira
-                        </span>
+
                     </Link>
                 </div>
 
@@ -90,12 +84,12 @@ export function Navbar() {
                     </div>
 
                     {/* Main Navigation Pill */}
-                    <nav className="hidden md:flex items-center gap-1 bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full px-6 py-2 shadow-xl transition-all hover:bg-[#1D1D1B]/95">
+                    <nav className="hidden md:flex items-center gap-1 bg-[#f7f5ee]/90 backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full px-6 py-2 shadow-sm transition-all hover:bg-[#f7f5ee] hover:shadow-md">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="px-4 py-2 hover:bg-white/10 rounded-full text-sm font-medium transition-colors"
+                                className="px-4 py-2 hover:bg-[#111111]/5 rounded-full text-sm font-medium transition-colors"
                             >
                                 {link.label}
                             </Link>
@@ -109,13 +103,13 @@ export function Navbar() {
                         >
                             <DropdownMenu open={collectionsOpen} onOpenChange={setCollectionsOpen} modal={false}>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="flex items-center gap-1 px-4 py-2 hover:bg-white/10 rounded-full text-sm font-medium transition-colors outline-none h-full">
+                                    <button className="flex items-center gap-1 px-4 py-2 hover:bg-[#111111]/5 rounded-full text-sm font-medium transition-colors outline-none h-full">
                                         Collections <ChevronDown className="h-3 w-3 opacity-70" />
                                     </button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="center" className="bg-[#1D1D1B]/95 border-white/10 text-white rounded-xl backdrop-blur-xl p-2 mt-2 w-48">
+                                <DropdownMenuContent align="center" className="bg-[#f7f5ee] border-[#e6e2d9] text-[#111111] rounded-xl backdrop-blur-xl p-2 mt-2 w-48 shadow-lg">
                                     {collectionsLinks.map((link) => (
-                                        <DropdownMenuItem key={link.href} asChild className="focus:bg-white/10 focus:text-white cursor-pointer rounded-lg">
+                                        <DropdownMenuItem key={link.href} asChild className="focus:bg-[#111111]/5 focus:text-[#111111] cursor-pointer rounded-lg">
                                             <Link href={link.href}>{link.label}</Link>
                                         </DropdownMenuItem>
                                     ))}
@@ -132,15 +126,15 @@ export function Navbar() {
                         >
                             <DropdownMenu open={plusMenuOpen} onOpenChange={setPlusMenuOpen} modal={false}>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="h-8 w-8 ml-1 flex items-center justify-center rounded-full hover:bg-[#56AF31] text-white/70 hover:text-white transition-all outline-none">
+                                    <button className="h-8 w-8 ml-1 flex items-center justify-center rounded-full hover:bg-[#56AF31] text-[#111111]/70 hover:text-white transition-all outline-none">
                                         <Plus className="h-5 w-5" />
                                     </button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-[#1D1D1B]/95 border-white/10 text-white rounded-xl backdrop-blur-xl p-2 mt-2 w-40">
-                                    <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer rounded-lg">
+                                <DropdownMenuContent align="end" className="bg-[#f7f5ee] border-[#e6e2d9] text-[#111111] rounded-xl backdrop-blur-xl p-2 mt-2 w-40 shadow-lg">
+                                    <DropdownMenuItem asChild className="focus:bg-[#111111]/5 focus:text-[#111111] cursor-pointer rounded-lg">
                                         <Link href="/pages/about-us">About Us</Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer rounded-lg">
+                                    <DropdownMenuItem asChild className="focus:bg-[#111111]/5 focus:text-[#111111] cursor-pointer rounded-lg">
                                         <Link href="/pages/contact-us">Contact Us</Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
@@ -151,7 +145,7 @@ export function Navbar() {
                     {/* Mobile Search Button */}
                     <button
                         onClick={() => setMobileSearchOpen(true)}
-                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full shadow-xl hover:bg-[#1D1D1B]/95"
+                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:shadow-md transition-all"
                     >
                         <Search className="h-5 w-5" />
                     </button>
@@ -159,7 +153,7 @@ export function Navbar() {
                     {/* Mobile Menu Button (Visible only on mobile) */}
                     <button
                         onClick={() => setMobileMenuOpen(true)}
-                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full shadow-xl hover:bg-[#1D1D1B]/95"
+                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:shadow-md transition-all"
                     >
                         <Menu className="h-6 w-6" />
                     </button>
@@ -167,7 +161,7 @@ export function Navbar() {
                     {/* Cart Circle */}
                     <button
                         onClick={openCart}
-                        className="group relative h-12 w-12 flex items-center justify-center bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full shadow-xl hover:bg-[#56AF31] transition-all duration-300"
+                        className="group relative h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:bg-[#56AF31] hover:text-white hover:border-[#56AF31] transition-all duration-300"
                     >
                         <ShoppingCart className="h-5 w-5" />
                         <AnimatePresence>
@@ -188,7 +182,7 @@ export function Navbar() {
 
                     {/* Account Circle */}
                     <Link href={isLoggedIn ? "/account" : "/account/login"}>
-                        <div className="h-12 w-12 flex items-center justify-center bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full shadow-xl hover:bg-[#56AF31] transition-all duration-300">
+                        <div className="h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:bg-[#56AF31] hover:text-white hover:border-[#56AF31] transition-all duration-300">
                             <User className="h-5 w-5" />
                         </div>
                     </Link>

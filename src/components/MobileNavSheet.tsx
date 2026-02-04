@@ -20,9 +20,9 @@ export function MobileNavSheet({ open, onOpenChange, navLinks }: MobileNavSheetP
             <SheetContent side="left" className="w-[300px] sm:w-[350px]">
                 <SheetHeader>
                     <SheetTitle className="text-left">
-                        <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                            Sukhira
-                        </span>
+                        <div className="h-10 w-10 bg-[#56AF31] rounded-full flex items-center justify-center text-white shadow-md">
+                            <span className="font-bold text-xl">S</span>
+                        </div>
                     </SheetTitle>
                 </SheetHeader>
 
