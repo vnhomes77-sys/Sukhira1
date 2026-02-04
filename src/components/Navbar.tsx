@@ -136,10 +136,10 @@ export function Navbar() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="bg-[#1D1D1B]/95 border-white/10 text-white rounded-xl backdrop-blur-xl p-2 mt-2 w-40">
                                     <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer rounded-lg">
-                                        <Link href="/about">About Us</Link>
+                                        <Link href="/pages/about-us">About Us</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer rounded-lg">
-                                        <Link href="/contact">Contact Us</Link>
+                                        <Link href="/pages/contact-us">Contact Us</Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

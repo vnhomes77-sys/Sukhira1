@@ -14,15 +14,14 @@ const footerLinks = {
         { href: '/collections/sale', label: 'Sale' },
     ],
     support: [
-        { href: '/pages/contact', label: 'Contact Us' },
+        { href: '/pages/contact-us', label: 'Contact Us' },
         { href: '/pages/faq', label: 'FAQ' },
-        { href: '/pages/shipping', label: 'Shipping Info' },
-        { href: '/pages/returns', label: 'Returns' },
+        { href: '/pages/shipping-policy', label: 'Shipping Policy' },
+        { href: '/pages/return-policy', label: 'Return Policy' },
     ],
     policies: [
         { href: '/pages/privacy-policy', label: 'Privacy Policy' },
-        { href: '/pages/terms-of-service', label: 'Terms of Service' },
-        { href: '/pages/refund-policy', label: 'Refund Policy' },
+        { href: '/pages/terms-and-conditions', label: 'Terms and Conditions' },
     ],
 };
 
