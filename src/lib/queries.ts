@@ -391,3 +391,48 @@ export const REMOVE_FROM_CART = `
   }
   ${CART_FRAGMENT}
 `;
+
+// Customer Auth Mutations
+export const CUSTOMER_CREATE = `
+  mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+        firstName
+        lastName
+        email
+        phone
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CUSTOMER_ACCESS_TOKEN_CREATE = `
+  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CUSTOMER_RECOVER = `
+  mutation customerRecover($email: String!) {
+    customerRecover(email: $email) {
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
