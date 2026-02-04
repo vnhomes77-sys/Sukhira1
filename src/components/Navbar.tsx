@@ -40,6 +40,7 @@ const collectionsLinks = [
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
     const [collectionsOpen, setCollectionsOpen] = useState(false);
     const [plusMenuOpen, setPlusMenuOpen] = useState(false);
     const { openCart, totalQuantity } = useCart();
@@ -152,6 +153,14 @@ export function Navbar() {
                         </div>
                     </nav>
 
+                    {/* Mobile Search Button */}
+                    <button
+                        onClick={() => setMobileSearchOpen(true)}
+                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full shadow-xl hover:bg-[#1D1D1B]/95"
+                    >
+                        <Search className="h-5 w-5" />
+                    </button>
+
                     {/* Mobile Menu Button (Visible only on mobile) */}
                     <button
                         onClick={() => setMobileMenuOpen(true)}
@@ -190,11 +199,11 @@ export function Navbar() {
                     </Link>
 
                 </div>
-            </header>
+            </header >
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Search Overlay */}
             <AnimatePresence>
-                {mobileMenuOpen && (
+                {mobileSearchOpen && (
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -202,35 +211,59 @@ export function Navbar() {
                         className="fixed inset-0 z-[100] bg-[#1D1D1B] pt-24 px-6 md:hidden"
                     >
                         <button
-                            onClick={() => setMobileMenuOpen(false)}
+                            onClick={() => setMobileSearchOpen(false)}
                             className="absolute top-6 right-6 p-2 text-white/70 hover:text-white"
                         >
                             <X className="h-8 w-8" />
                         </button>
-
-                        <nav className="flex flex-col gap-6 text-center">
-                            {[...navLinks, ...collectionsLinks, { href: '/collections/sale', label: 'Sale' }].map((link, i) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="text-2xl font-medium text-white hover:text-[#56AF31]"
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                            <div className="h-px bg-white/10 my-4" />
-                            <Link
-                                href="/account"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="text-xl text-white/80"
-                            >
-                                My Account
-                            </Link>
-                        </nav>
+                        <div className="w-full">
+                            <SmartSearch />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {
+                    mobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="fixed inset-0 z-[100] bg-[#1D1D1B] pt-24 px-6 md:hidden"
+                        >
+                            <button
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="absolute top-6 right-6 p-2 text-white/70 hover:text-white"
+                            >
+                                <X className="h-8 w-8" />
+                            </button>
+
+                            <nav className="flex flex-col gap-6 text-center">
+                                {[...navLinks, ...collectionsLinks, { href: '/collections/sale', label: 'Sale' }].map((link, i) => (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="text-2xl font-medium text-white hover:text-[#56AF31]"
+                                    >
+                                        {link.label}
+                                    </Link>
+                                ))}
+                                <div className="h-px bg-white/10 my-4" />
+                                <Link
+                                    href="/account"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="text-xl text-white/80"
+                                >
+                                    My Account
+                                </Link>
+                            </nav>
+                        </motion.div>
+                    )
+                }
+            </AnimatePresence >
         </>
     );
 }
