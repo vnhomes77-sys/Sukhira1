@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import { ShopifyCart, ShopifyCartLine, shopifyFetch, extractNodes } from '@/lib/shopify';
 import {
     CREATE_CART,
@@ -231,8 +232,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
 
     const checkout = useCallback(() => {
+        console.log('Attempting checkout. Cart:', state.cart);
         if (state.cart?.checkoutUrl) {
+            console.log('Redirecting to:', state.cart.checkoutUrl);
             window.location.href = state.cart.checkoutUrl;
+        } else {
+            console.error('Checkout URL is missing from cart object');
+            toast.error("Unable to proceed to checkout. Please try refreshing the page.");
         }
     }, [state.cart]);
 
