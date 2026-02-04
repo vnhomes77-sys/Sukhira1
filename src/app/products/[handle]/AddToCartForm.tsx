@@ -85,35 +85,40 @@ export function AddToCartForm({ product, variants, options, title, handle, featu
     return (
         <div className="space-y-4">
             {/* Variant Options */}
-            {options.map((option) => (
-                <div key={option.id}>
-                    <label className="text-sm font-medium mb-2 block">{option.name}</label>
-                    <Select
-                        value={selectedOptions[option.name]}
-                        onValueChange={(value) => handleOptionChange(option.name, value)}
-                    >
-                        <SelectTrigger className="w-full">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {option.values.map((value) => (
-                                <SelectItem key={value} value={value}>
-                                    {value}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            ))}
+            {options.map((option) => {
+                // Hide "Title" or "Default Title" option if it's the only one
+                if (option.name === 'Title' && options.length === 1) return null;
+
+                return (
+                    <div key={option.id}>
+                        <label className="text-sm font-medium mb-2 block">{option.name}</label>
+                        <Select
+                            value={selectedOptions[option.name]}
+                            onValueChange={(value) => handleOptionChange(option.name, value)}
+                        >
+                            <SelectTrigger className="w-full h-11 border-[#e6e2d9] focus:ring-[#6e8b63]">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {option.values.map((value) => (
+                                    <SelectItem key={value} value={value}>
+                                        {value}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                );
+            })}
 
             {/* Quantity */}
             <div>
                 <label className="text-sm font-medium mb-2 block">Quantity</label>
-                <div className="flex items-center border rounded-md w-fit">
+                <div className="flex items-center border border-[#e6e2d9] rounded-xl w-fit overflow-hidden bg-white">
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 rounded-none"
+                        className="h-11 w-11 rounded-none hover:bg-gray-50"
                         onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                         disabled={quantity <= 1}
                     >
@@ -123,19 +128,18 @@ export function AddToCartForm({ product, variants, options, title, handle, featu
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 rounded-none"
+                        className="h-11 w-11 rounded-none hover:bg-gray-50"
                         onClick={() => setQuantity((q) => q + 1)}
                     >
                         <Plus className="h-4 w-4" />
                     </Button>
                 </div>
-
             </div>
 
             {/* Add to Cart Button */}
-            <div className="flex gap-2">
+            <div className="flex gap-3 pt-2">
                 <Button
-                    className="flex-1 h-12 text-lg"
+                    className="flex-1 h-[52px] text-base font-semibold bg-[#63b32e] hover:bg-[#549925] text-white rounded-[12px] shadow-sm transition-all active:scale-[0.98]"
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={!isAvailable || isLoading}
@@ -144,11 +148,19 @@ export function AddToCartForm({ product, variants, options, title, handle, featu
                     {isAvailable ? 'Add to Cart' : 'Sold Out'}
                 </Button>
 
-                <WishlistButton
-                    product={productInfo}
-                    variant="full"
-                    className="h-12 w-12 p-0 flex-shrink-0 border-[#e6e2d9] hover:bg-[#f7f5ee] hover:text-[#56AF31] text-[#111111]"
-                />
+                <div className="flex-shrink-0">
+                    <WishlistButton
+                        product={{
+                            id: product.id,
+                            handle: handle,
+                            title: title,
+                            priceRange: { minVariantPrice: { amount: variants[0]?.price?.amount || '0', currencyCode: variants[0]?.price?.currencyCode || 'INR' } },
+                            featuredImage: featuredImage
+                        }}
+                        variant="icon"
+                        className="h-[52px] w-[52px] rounded-[12px] border border-[#e6e2d9] bg-white hover:bg-[#f7f5ee] text-[#111111] hover:text-[#6e8b63] transition-colors flex items-center justify-center shadow-sm"
+                    />
+                </div>
             </div>
         </div>
     );
