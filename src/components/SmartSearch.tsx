@@ -110,15 +110,15 @@ export function SmartSearch() {
                         setOpen(true);
                     }}
                     onFocus={() => setOpen(true)}
-                    className="w-full bg-[#f7f5ee]/90 backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#56AF31] focus:border-transparent placeholder-[#111111]/50 transition-all shadow-sm focus:shadow-md"
+                    className="w-full bg-[#1D1D1B]/95 backdrop-blur-md border border-white/10 text-white rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#56AF31] focus:border-transparent placeholder-white/50 transition-all shadow-xl"
                 />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#111111]/50 group-focus-within:text-[#56AF31] transition-colors" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 group-focus-within:text-[#56AF31] transition-colors" />
 
                 {query && (
                     <button
                         type="button"
                         onClick={() => { setQuery(''); setResults([]); }}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#111111]/50 hover:text-[#111111]"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -133,10 +133,10 @@ export function SmartSearch() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl border border-[#e6e2d9] rounded-2xl shadow-xl overflow-hidden z-[100]"
+                        className="absolute top-full left-0 right-0 mt-2 bg-[#1D1D1B]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[100]"
                     >
                         {loading ? (
-                            <div className="flex items-center justify-center p-6 text-[#111111]/70">
+                            <div className="flex items-center justify-center p-6 text-white/70">
                                 <Loader2 className="h-6 w-6 animate-spin mr-2" />
                                 <span>Searching...</span>
                             </div>
@@ -153,10 +153,10 @@ export function SmartSearch() {
                                         <li key={product.id}>
                                             <Link
                                                 href={`/products/${product.handle}`}
-                                                className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f5ee] transition-colors group/item"
+                                                className="flex items-center gap-3 px-4 py-3 hover:bg-white/10 transition-colors group/item"
                                                 onClick={() => setOpen(false)}
                                             >
-                                                <div className="relative h-12 w-12 rounded-md overflow-hidden bg-gray-100 flex-shrink-0 border border-[#e6e2d9]">
+                                                <div className="relative h-12 w-12 rounded-md overflow-hidden bg-white/5 flex-shrink-0 border border-white/10">
                                                     {product.featuredImage && (
                                                         <img
                                                             src={product.featuredImage.url}
@@ -166,10 +166,10 @@ export function SmartSearch() {
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="text-sm font-medium text-[#111111] group-hover/item:text-[#56AF31] transition-colors truncate">
+                                                    <h4 className="text-sm font-medium text-white group-hover/item:text-[#56AF31] transition-colors truncate">
                                                         {product.title}
                                                     </h4>
-                                                    <p className="text-xs text-[#666666]">
+                                                    <p className="text-xs text-white/50">
                                                         {product.priceRange.minVariantPrice.currencyCode} {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)}
                                                     </p>
                                                 </div>
@@ -179,10 +179,10 @@ export function SmartSearch() {
                                 </ul>
 
                                 {/* View All */}
-                                <div className="border-t border-[#e6e2d9] p-2">
+                                <div className="border-t border-white/10 p-2">
                                     <Button
                                         variant="ghost"
-                                        className="w-full justify-center text-sm text-[#111111]/70 hover:text-[#111111] hover:bg-[#f7f5ee] h-9"
+                                        className="w-full justify-center text-sm text-white/70 hover:text-white hover:bg-white/10 h-9"
                                         onClick={handleSubmit}
                                     >
                                         View all results for "{query}"
@@ -190,7 +190,7 @@ export function SmartSearch() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="p-6 text-center text-[#111111]/50">
+                            <div className="p-6 text-center text-white/50">
                                 <p>No products found for "{query}"</p>
                             </div>
                         )}

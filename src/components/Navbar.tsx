@@ -40,219 +40,172 @@ const collectionsLinks = [
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-    const [collectionsOpen, setCollectionsOpen] = useState(false);
-    const [plusMenuOpen, setPlusMenuOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
     const { openCart, totalQuantity } = useCart();
     const { customer, isLoggedIn } = useAuth();
 
-    // Handle scroll for minor aesthetic changes if needed,
-    // though floating nav usually stays consistent
+    // Handle scroll
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
         };
-
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const updatedNavLinks = [
+        ...navLinks,
+        { href: '/collections/new-arrivals', label: 'New Arrivals' }
+    ];
+
     return (
         <>
-            {/*
-        Floating Header Container
-        positioned fixed at top, allowing clicks to pass through empty areas
-      */}
-            <header className="fixed top-6 left-0 right-0 z-50 flex items-start justify-between px-4 md:px-8 pointer-events-none">
+            <header className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
+                {/* Main Glass Pill Container */}
+                <nav className="pointer-events-auto flex items-center bg-[#141414]/55 backdrop-blur-md border border-white/10 rounded-full p-2 shadow-[0_12px_30px_rgba(0,0,0,0.25)] transition-all">
 
-                {/* Logo - Floating independently on the left */}
-                <div className="pointer-events-auto">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="h-10 w-10 md:h-12 md:w-12 bg-[#56AF31] rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform">
-                            <span className="font-bold text-xl">S</span>
-                        </div>
-
+                    {/* Logo (Inside Pill) */}
+                    <Link href="/" className="flex items-center justify-center h-10 w-10 md:h-11 md:w-11 bg-white rounded-full mr-2 hover:scale-105 transition-transform flex-shrink-0">
+                        <span className="font-bold text-xl text-black">S</span>
                     </Link>
-                </div>
 
-                {/* Center/Right Container for Pill + Icons */}
-                <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
-
-                    {/* Search Bar - Hidden on very small screens, visible on md+ */}
-                    <div className="hidden lg:block w-72">
-                        <SmartSearch />
-                    </div>
-
-                    {/* Main Navigation Pill */}
-                    <nav className="hidden md:flex items-center gap-1 bg-[#f7f5ee]/90 backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full px-6 py-2 shadow-sm transition-all hover:bg-[#f7f5ee] hover:shadow-md">
-                        {navLinks.map((link) => (
+                    {/* Desktop Links */}
+                    <div className="hidden md:flex items-center gap-1 mx-2">
+                        {updatedNavLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="px-4 py-2 hover:bg-[#111111]/5 rounded-full text-sm font-medium transition-colors"
+                                className="px-4 py-2 text-[15px] font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-full transition-all"
                             >
                                 {link.label}
                             </Link>
                         ))}
+                    </div>
 
+                    {/* Icons Section */}
+                    <div className="flex items-center gap-1 md:gap-2 pl-2">
 
-                        {/* Dropdown for 'Collections' */}
-                        <div
-                            onMouseEnter={() => setCollectionsOpen(true)}
-                            onMouseLeave={() => setCollectionsOpen(false)}
-                        >
-                            <DropdownMenu open={collectionsOpen} onOpenChange={setCollectionsOpen} modal={false}>
-                                <DropdownMenuTrigger asChild>
-                                    <button className="flex items-center gap-1 px-4 py-2 hover:bg-[#111111]/5 rounded-full text-sm font-medium transition-colors outline-none h-full">
-                                        Collections <ChevronDown className="h-3 w-3 opacity-70" />
-                                    </button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="center" className="bg-[#f7f5ee] border-[#e6e2d9] text-[#111111] rounded-xl backdrop-blur-xl p-2 mt-2 w-48 shadow-lg">
-                                    {collectionsLinks.map((link) => (
-                                        <DropdownMenuItem key={link.href} asChild className="focus:bg-[#111111]/5 focus:text-[#111111] cursor-pointer rounded-lg">
-                                            <Link href={link.href}>{link.label}</Link>
-                                        </DropdownMenuItem>
-                                    ))}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-
-
-
-                        {/* Plus Icon Action / More Menu */}
-                        <div
-                            onMouseEnter={() => setPlusMenuOpen(true)}
-                            onMouseLeave={() => setPlusMenuOpen(false)}
-                        >
-                            <DropdownMenu open={plusMenuOpen} onOpenChange={setPlusMenuOpen} modal={false}>
-                                <DropdownMenuTrigger asChild>
-                                    <button className="h-8 w-8 ml-1 flex items-center justify-center rounded-full hover:bg-[#56AF31] text-[#111111]/70 hover:text-white transition-all outline-none">
-                                        <Plus className="h-5 w-5" />
-                                    </button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-[#f7f5ee] border-[#e6e2d9] text-[#111111] rounded-xl backdrop-blur-xl p-2 mt-2 w-40 shadow-lg">
-                                    <DropdownMenuItem asChild className="focus:bg-[#111111]/5 focus:text-[#111111] cursor-pointer rounded-lg">
-                                        <Link href="/pages/about-us">About Us</Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="focus:bg-[#111111]/5 focus:text-[#111111] cursor-pointer rounded-lg">
-                                        <Link href="/pages/contact-us">Contact Us</Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-                    </nav>
-
-                    {/* Mobile Search Button */}
-                    <button
-                        onClick={() => setMobileSearchOpen(true)}
-                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:shadow-md transition-all"
-                    >
-                        <Search className="h-5 w-5" />
-                    </button>
-
-                    {/* Mobile Menu Button (Visible only on mobile) */}
-                    <button
-                        onClick={() => setMobileMenuOpen(true)}
-                        className="md:hidden h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:shadow-md transition-all"
-                    >
-                        <Menu className="h-6 w-6" />
-                    </button>
-
-                    {/* Cart Circle */}
-                    <button
-                        onClick={openCart}
-                        className="group relative h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:bg-[#56AF31] hover:text-white hover:border-[#56AF31] transition-all duration-300"
-                    >
-                        <ShoppingCart className="h-5 w-5" />
-                        <AnimatePresence>
-                            {totalQuantity > 0 && (
-                                <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    exit={{ scale: 0 }}
-                                    className="absolute -top-1 -right-1"
-                                >
-                                    <Badge className="h-5 w-5 flex items-center justify-center p-0 text-[10px] border-0 bg-[#56AF31] text-white shadow-sm group-hover:bg-white group-hover:text-[#56AF31]">
-                                        {totalQuantity}
-                                    </Badge>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </button>
-
-                    {/* Account Circle */}
-                    <Link href={isLoggedIn ? "/account" : "/account/login"}>
-                        <div className="h-12 w-12 flex items-center justify-center bg-[#f7f5ee] backdrop-blur-md border border-[#e6e2d9] text-[#111111] rounded-full shadow-sm hover:bg-[#56AF31] hover:text-white hover:border-[#56AF31] transition-all duration-300">
-                            <User className="h-5 w-5" />
-                        </div>
-                    </Link>
-
-                </div>
-            </header >
-
-            {/* Mobile Search Overlay */}
-            <AnimatePresence>
-                {mobileSearchOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="fixed inset-0 z-[100] bg-[#1D1D1B] pt-24 px-6 md:hidden"
-                    >
+                        {/* Search Trigger */}
                         <button
-                            onClick={() => setMobileSearchOpen(false)}
-                            className="absolute top-6 right-6 p-2 text-white/70 hover:text-white"
+                            onClick={() => setSearchOpen(true)}
+                            className="h-10 w-10 flex items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-all"
                         >
-                            <X className="h-8 w-8" />
+                            <Search className="h-[18px] w-[18px]" />
                         </button>
-                        <div className="w-full">
+
+                        {/* Cart */}
+                        <button
+                            onClick={openCart}
+                            className="relative h-10 w-10 flex items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-all"
+                        >
+                            <ShoppingCart className="h-[18px] w-[18px]" />
+                            <AnimatePresence>
+                                {totalQuantity > 0 && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        exit={{ scale: 0 }}
+                                        className="absolute top-0 right-0"
+                                    >
+                                        <div className="h-4 w-4 bg-[#56AF31] rounded-full flex items-center justify-center text-[10px] text-white font-bold border border-[#141414]">
+                                            {totalQuantity}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </button>
+
+                        {/* Account */}
+                        <Link href={isLoggedIn ? "/account" : "/account/login"}>
+                            <div className="h-10 w-10 flex items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-all">
+                                <User className="h-[18px] w-[18px]" />
+                            </div>
+                        </Link>
+
+                        {/* Mobile Menu Trigger */}
+                        <button
+                            onClick={() => setMobileMenuOpen(true)}
+                            className="md:hidden h-10 w-10 flex items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-all ml-1"
+                        >
+                            <Menu className="h-5 w-5" />
+                        </button>
+                    </div>
+                </nav>
+            </header>
+
+            {/* Search Overlay (Reusing SmartSearch) */}
+            <AnimatePresence>
+                {searchOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex justify-center items-start pt-32 px-4"
+                        onClick={() => setSearchOpen(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, y: -20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.95, y: -20 }}
+                            className="w-full max-w-lg relative"
+                            onClick={(e) => e.stopPropagation()}
+                        >
                             <SmartSearch />
-                        </div>
+                            <button
+                                onClick={() => setSearchOpen(false)}
+                                className="absolute -right-12 top-2 text-white/70 hover:text-white"
+                            >
+                                <X className="h-8 w-8" />
+                            </button>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
-                {
-                    mobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="fixed inset-0 z-[100] bg-[#1D1D1B] pt-24 px-6 md:hidden"
-                        >
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        className="fixed inset-y-0 right-0 z-[100] w-full sm:w-80 bg-[#1D1D1B] shadow-2xl p-6 flex flex-col"
+                    >
+                        <div className="flex justify-between items-center mb-8">
+                            <div className="h-10 w-10 bg-[#56AF31] rounded-full flex items-center justify-center text-white shadow-md">
+                                <span className="font-bold text-xl">S</span>
+                            </div>
                             <button
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="absolute top-6 right-6 p-2 text-white/70 hover:text-white"
+                                className="p-2 text-white/70 hover:text-white rounded-full hover:bg-white/10"
                             >
-                                <X className="h-8 w-8" />
+                                <X className="h-6 w-6" />
                             </button>
+                        </div>
 
-                            <nav className="flex flex-col gap-6 text-center">
-                                {[...navLinks, ...collectionsLinks].map((link, i) => (
-                                    <Link
-                                        key={link.href}
-                                        href={link.href}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="text-2xl font-medium text-white hover:text-[#56AF31]"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                ))}
-                                <div className="h-px bg-white/10 my-4" />
+                        <nav className="flex flex-col gap-4">
+                            {[...updatedNavLinks, ...collectionsLinks].map((link) => (
                                 <Link
-                                    href="/account"
+                                    key={link.href}
+                                    href={link.href}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="text-xl text-white/80"
+                                    className="text-lg font-medium text-white/90 hover:text-[#56AF31] py-2 border-b border-white/5"
                                 >
-                                    My Account
+                                    {link.label}
                                 </Link>
-                            </nav>
-                        </motion.div>
-                    )
-                }
-            </AnimatePresence >
+                            ))}
+                            <Link
+                                href={isLoggedIn ? "/account" : "/account/login"}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-lg font-medium text-white/90 hover:text-[#56AF31] py-2 border-b border-white/5 mt-2"
+                            >
+                                {isLoggedIn ? "My Account" : "Login / Register"}
+                            </Link>
+                        </nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
