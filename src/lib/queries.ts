@@ -298,6 +298,31 @@ export const SEARCH_PRODUCTS = `
   ${PRODUCT_CARD_FRAGMENT}
 `;
 
+export const PREDICTIVE_SEARCH = `
+  query predictiveSearch($query: String!) {
+    predictiveSearch(query: $query, limit: 6, limitScope: EACH) {
+      products {
+        id
+        handle
+        title
+        vendor
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        featuredImage {
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
 // Cart Mutations
 export const CREATE_CART = `
   mutation createCart($input: CartInput!) {

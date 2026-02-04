@@ -24,6 +24,7 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/context/AuthContext';
+import { SmartSearch } from '@/components/SmartSearch';
 
 const navLinks = [
     { href: '/collections/home-kitchen', label: 'Home & Kitchen' },
@@ -81,6 +82,11 @@ export function Navbar() {
 
                 {/* Center/Right Container for Pill + Icons */}
                 <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
+
+                    {/* Search Bar - Hidden on very small screens, visible on md+ */}
+                    <div className="hidden lg:block w-72">
+                        <SmartSearch />
+                    </div>
 
                     {/* Main Navigation Pill */}
                     <nav className="hidden md:flex items-center gap-1 bg-[#1D1D1B]/85 backdrop-blur-md border border-white/10 text-white rounded-full px-6 py-2 shadow-xl transition-all hover:bg-[#1D1D1B]/95">
