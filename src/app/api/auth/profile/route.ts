@@ -1,6 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getCustomer } from '@/lib/customerAuth.server';
+import { shopifyFetch } from '@/lib/shopify';
+
+const GET_CUSTOMER_QUERY = `
+  query getCustomer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      firstName
+      lastName
+      email
+      phone
+    }
+  }
+`;
 
 export async function GET(request: NextRequest) {
     try {
@@ -11,9 +23,24 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const customer = await getCustomer(accessToken);
+        const data = await shopifyFetch<{
+            customer: {
+                id: string;
+                firstName: string;
+                lastName: string;
+                email: string;
+                phone: string;
+            } | null;
+        }>({
+            query: GET_CUSTOMER_QUERY,
+            variables: { customerAccessToken: accessToken },
+            cache: 'no-store',
+        });
+
+        const customer = data.customer;
 
         if (!customer) {
+            // Token might be invalid if customer is null
             return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
         }
 
