@@ -7,7 +7,7 @@ const badges = [
     {
         icon: Truck,
         title: 'Free Shipping',
-        description: 'On orders over $50',
+        description: 'On orders over ₹499',
     },
     {
         icon: Shield,
@@ -17,7 +17,7 @@ const badges = [
     {
         icon: RefreshCw,
         title: 'Easy Returns',
-        description: '30-day return policy',
+        description: '7-day return policy',
     },
     {
         icon: Headphones,
