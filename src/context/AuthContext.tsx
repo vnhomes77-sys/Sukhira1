@@ -32,7 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const checkAuth = async () => {
             try {
                 // Try to get access token from cookie (set by API route)
-                const token = Cookies.get('customer_access_token');
+                // We check for either the Storefront token OR the OAuth token
+                const token = Cookies.get('customer_access_token') || Cookies.get('customer_account_token');
 
                 if (token) {
                     setAccessToken(token);
@@ -46,8 +47,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                             }
                         } else {
                             // Token might be invalid or expired
+                            // Try to remove both to be safe
                             Cookies.remove('customer_access_token');
                             Cookies.remove('customer_refresh_token');
+                            Cookies.remove('customer_account_token');
+                            Cookies.remove('customer_account_refresh_token');
                             setAccessToken(null);
                         }
                     } catch (err) {

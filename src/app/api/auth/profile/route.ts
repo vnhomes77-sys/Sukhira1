@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { shopifyFetch } from '@/lib/shopify';
+import { getCustomer as getCustomerOAuth } from '@/lib/customerAuth.server';
 
 const GET_CUSTOMER_QUERY = `
   query getCustomer($customerAccessToken: String!) {
@@ -17,30 +18,37 @@ const GET_CUSTOMER_QUERY = `
 export async function GET(request: NextRequest) {
     try {
         const cookieStore = await cookies();
-        const accessToken = cookieStore.get('customer_access_token')?.value;
+        const storefrontToken = cookieStore.get('customer_access_token')?.value;
+        const accountToken = cookieStore.get('customer_account_token')?.value;
 
-        if (!accessToken) {
+        if (!storefrontToken && !accountToken) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const data = await shopifyFetch<{
-            customer: {
-                id: string;
-                firstName: string;
-                lastName: string;
-                email: string;
-                phone: string;
-            } | null;
-        }>({
-            query: GET_CUSTOMER_QUERY,
-            variables: { customerAccessToken: accessToken },
-            cache: 'no-store',
-        });
+        let customer = null;
 
-        const customer = data.customer;
+        if (storefrontToken) {
+            // Strategy 1: Native Storefront API
+            const data = await shopifyFetch<{
+                customer: {
+                    id: string;
+                    firstName: string;
+                    lastName: string;
+                    email: string;
+                    phone: string;
+                } | null;
+            }>({
+                query: GET_CUSTOMER_QUERY,
+                variables: { customerAccessToken: storefrontToken },
+                cache: 'no-store',
+            });
+            customer = data.customer;
+        } else if (accountToken) {
+            // Strategy 2: Customer Account API (OAuth)
+            customer = await getCustomerOAuth(accountToken);
+        }
 
         if (!customer) {
-            // Token might be invalid if customer is null
             return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
         }
 

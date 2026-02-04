@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         const response = NextResponse.redirect(new URL('/account', baseUrl));
 
         // Set access token cookie
-        response.cookies.set('customer_access_token', accessToken, {
+        response.cookies.set('customer_account_token', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
         });
 
         // Set refresh token cookie
-        response.cookies.set('customer_refresh_token', refreshToken, {
+        response.cookies.set('customer_account_refresh_token', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
