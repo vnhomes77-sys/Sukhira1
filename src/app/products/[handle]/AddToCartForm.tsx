@@ -154,8 +154,9 @@ export function AddToCartForm({ product, variants, options, title, handle, featu
                             id: product.id,
                             handle: handle,
                             title: title,
-                            priceRange: { minVariantPrice: { amount: variants[0]?.price?.amount || '0', currencyCode: variants[0]?.price?.currencyCode || 'INR' } },
-                            featuredImage: featuredImage
+                            priceRange: { minVariantPrice: { amount: variants[0]?.price?.amount || '0' } },
+                            featuredImage: featuredImage,
+                            variants: { edges: variants.map(v => ({ node: { id: v.id } })) }
                         }}
                         variant="icon"
                         className="h-[52px] w-[52px] rounded-[12px] border border-[#e6e2d9] bg-white hover:bg-[#f7f5ee] text-[#111111] hover:text-[#6e8b63] transition-colors flex items-center justify-center shadow-sm"
