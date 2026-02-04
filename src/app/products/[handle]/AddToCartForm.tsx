@@ -103,16 +103,11 @@ export function AddToCartForm({ product, variants, options }: AddToCartFormProps
                         size="icon"
                         className="h-10 w-10 rounded-none"
                         onClick={() => setQuantity((q) => q + 1)}
-                        disabled={selectedVariant && quantity >= selectedVariant.quantityAvailable}
                     >
                         <Plus className="h-4 w-4" />
                     </Button>
                 </div>
-                {selectedVariant && selectedVariant.quantityAvailable < 10 && selectedVariant.quantityAvailable > 0 && (
-                    <p className="text-sm text-orange-600 mt-1">
-                        Only {selectedVariant.quantityAvailable} left in stock
-                    </p>
-                )}
+
             </div>
 
             {/* Add to Cart Button */}
