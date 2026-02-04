@@ -108,6 +108,20 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
+                        <div className="flex items-start space-x-2 pt-2">
+                            <div className="flex items-center h-5">
+                                <input
+                                    id="acceptsMarketing"
+                                    name="acceptsMarketing"
+                                    type="checkbox"
+                                    className="h-4 w-4 rounded border-[#e6e2d9] text-[#6e8b63] focus:ring-[#6e8b63]"
+                                />
+                            </div>
+                            <Label htmlFor="acceptsMarketing" className="text-sm text-[#444] font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mt-1">
+                                I agree to receive marketing updates, ads, and offers from Sukhira.
+                            </Label>
+                        </div>
+
                         <Button
                             className="w-full h-12 text-base bg-[#63b32e] hover:bg-[#549925] text-white rounded-[12px]"
                             size="lg"
