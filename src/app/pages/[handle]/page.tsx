@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
 
     return {
         title: `${page.title} | ${storeContent.store_name}`,
-        description: page.content.substring(0, 160).replace(/\n/g, ' '),
+        description: page.content_html.replace(/<[^>]*>?/gm, '').substring(0, 160).replace(/\n/g, ' '),
     };
 }
 
@@ -36,10 +36,10 @@ export default async function StaticPage({ params }: { params: Promise<{ handle:
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
-            <h1 className="text-4xl font-bold mb-8">{page.title}</h1>
-            <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap font-sans text-gray-700 dark:text-gray-300">
-                {page.content}
-            </div>
+            <div
+                className="prose prose-lg dark:prose-invert max-w-none font-sans text-gray-700 dark:text-gray-300"
+                dangerouslySetInnerHTML={{ __html: page.content_html }}
+            />
         </div>
     );
 }
